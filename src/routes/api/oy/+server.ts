@@ -30,7 +30,7 @@ export const POST: RequestHandler = async ({ request }) => {
   }
 
   // OTP'yi doğrula
-  const { error: otpError } = await supabaseServer.auth.verifyOtp({
+  const { data: verifyData, error: otpError } = await supabaseServer.auth.verifyOtp({
     email,
     token: kod,
     type: 'email'
@@ -52,6 +52,11 @@ export const POST: RequestHandler = async ({ request }) => {
       return json({ error: 'Bu anket için zaten oy kullandınız' }, { status: 409 });
     }
     return json({ error: 'Oy kaydedilemedi, tekrar deneyin' }, { status: 500 });
+  }
+
+  // Oturum tek kullanımlık — oyu kaydettikten sonra kapat
+  if (verifyData?.session) {
+    await supabaseServer.auth.admin.signOut(verifyData.session.access_token, 'local');
   }
 
   // Güncel sonuçları döndür

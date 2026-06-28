@@ -1,13 +1,17 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 
-const { mockVerifyOtp, mockFrom } = vi.hoisted(() => ({
+const { mockVerifyOtp, mockAdminSignOut, mockFrom } = vi.hoisted(() => ({
   mockVerifyOtp: vi.fn(),
+  mockAdminSignOut: vi.fn().mockResolvedValue({}),
   mockFrom: vi.fn(),
 }));
 
 vi.mock('$lib/supabase', () => ({
   supabaseServer: {
-    auth: { verifyOtp: mockVerifyOtp },
+    auth: {
+      verifyOtp: mockVerifyOtp,
+      admin: { signOut: mockAdminSignOut },
+    },
     from: mockFrom,
   }
 }));
@@ -42,7 +46,7 @@ describe('POST /api/oy', () => {
   });
 
   it('geçerli istek için oy kaydeder ve sonuçları döner', async () => {
-    mockVerifyOtp.mockResolvedValue({ error: null });
+    mockVerifyOtp.mockResolvedValue({ data: { session: { access_token: 'tok' }, user: {} }, error: null });
 
     let callCount = 0;
     mockFrom.mockImplementation((table: string) => {
@@ -94,5 +98,27 @@ describe('POST /api/oy', () => {
     });
     const res = await POST({ request: req } as any);
     expect(res.status).toBe(401);
+  });
+
+  it('mükerrer oy için 409 ve Türkçe hata mesajı döner', async () => {
+    mockVerifyOtp.mockResolvedValue({ data: { session: null }, error: null });
+
+    let callCount = 0;
+    mockFrom.mockImplementation((table: string) => {
+      callCount++;
+      if (table === 'anketler') return makeAnketChain();
+      // insert returns duplicate key error
+      return { insert: vi.fn().mockResolvedValue({ error: { code: '23505' } }) };
+    });
+
+    const req = new Request('http://localhost/api/oy', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email: 'test@example.com', anketId: 'anket-uuid', kod: '123456', secim: 'B' })
+    });
+    const res = await POST({ request: req } as any);
+    expect(res.status).toBe(409);
+    const body = await res.json();
+    expect(body.error).toBe('Bu anket için zaten oy kullandınız');
   });
 });
