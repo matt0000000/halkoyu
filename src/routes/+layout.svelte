@@ -3,10 +3,16 @@
   let { children } = $props();
 </script>
 
-<main class="min-h-screen bg-gray-50 text-gray-900">
-  <header class="bg-white border-b border-gray-200 px-4 py-3 flex justify-between items-center">
-    <a href="/" class="text-xl font-bold text-blue-600">Halk Oylaması</a>
-    <a href="/sonuclar" class="text-sm text-gray-500 hover:text-blue-600">Geçmiş Sonuçlar</a>
+<div class="min-h-screen bg-zinc-950 text-zinc-100">
+  <header class="border-b border-zinc-800 px-6 py-4">
+    <div class="max-w-3xl mx-auto flex justify-between items-center">
+      <a href="/" class="text-base font-semibold tracking-tight text-white hover:text-indigo-400 transition-colors">
+        Halk Oylaması
+      </a>
+      <a href="/sonuclar" class="text-sm text-zinc-400 hover:text-indigo-400 transition-colors">
+        Geçmiş Sonuçlar
+      </a>
+    </div>
   </header>
   {@render children()}
-</main>
+</div>

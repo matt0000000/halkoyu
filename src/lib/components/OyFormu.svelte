@@ -27,19 +27,27 @@
 </script>
 
 {#if tamam}
-  <p class="text-green-600 font-semibold text-center py-6 text-lg col-span-2">Oyunuz kaydedildi!</p>
+  <div class="col-span-2 text-center py-8">
+    <p class="text-indigo-400 font-semibold text-lg">Oyunuz kaydedildi!</p>
+  </div>
 {:else}
   <button
     onclick={() => oyKullan('A')}
     disabled={yukleniyor}
-    class="py-6 px-4 rounded-xl border-2 border-gray-300 hover:border-blue-500 hover:bg-blue-50 disabled:opacity-50 transition-colors text-lg font-medium"
-  >{secenekA}</button>
+    class="group py-8 px-6 rounded-2xl border border-zinc-700 bg-zinc-900 hover:border-indigo-500 hover:bg-indigo-950 disabled:opacity-40 transition-all duration-200 text-left"
+  >
+    <span class="block text-xs font-semibold uppercase tracking-widest text-zinc-500 group-hover:text-indigo-400 mb-2 transition-colors">Seçenek A</span>
+    <span class="block text-xl font-bold text-white">{secenekA}</span>
+  </button>
   <button
     onclick={() => oyKullan('B')}
     disabled={yukleniyor}
-    class="py-6 px-4 rounded-xl border-2 border-gray-300 hover:border-blue-500 hover:bg-blue-50 disabled:opacity-50 transition-colors text-lg font-medium"
-  >{secenekB}</button>
+    class="group py-8 px-6 rounded-2xl border border-zinc-700 bg-zinc-900 hover:border-indigo-500 hover:bg-indigo-950 disabled:opacity-40 transition-all duration-200 text-left"
+  >
+    <span class="block text-xs font-semibold uppercase tracking-widest text-zinc-500 group-hover:text-indigo-400 mb-2 transition-colors">Seçenek B</span>
+    <span class="block text-xl font-bold text-white">{secenekB}</span>
+  </button>
   {#if hata}
-    <p class="text-red-500 text-sm text-center col-span-2 mt-2">{hata}</p>
+    <p class="col-span-2 text-red-400 text-sm text-center mt-1">{hata}</p>
   {/if}
 {/if}

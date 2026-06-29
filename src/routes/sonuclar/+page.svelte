@@ -9,20 +9,22 @@
   <title>Geçmiş Sonuçlar — Halk Oylaması</title>
 </svelte:head>
 
-<div class="max-w-2xl mx-auto px-4 py-10">
-  <h1 class="text-2xl font-bold mb-8">Geçmiş Anket Sonuçları</h1>
+<div class="max-w-3xl mx-auto px-6 py-14">
+  <h1 class="text-2xl font-bold text-white mb-10">Geçmiş Anket Sonuçları</h1>
 
   {#if data.anketler.length === 0}
-    <p class="text-gray-500 text-center py-10">Henüz tamamlanmış anket bulunmuyor.</p>
+    <div class="text-center py-20 text-zinc-500">
+      <p>Henüz tamamlanmış anket bulunmuyor.</p>
+    </div>
   {:else}
-    <div class="space-y-6">
+    <div class="space-y-4">
       {#each data.anketler as anket (anket.id)}
         {@const toplam = anket.oy_a + anket.oy_b}
-        <div class="bg-white rounded-xl border border-gray-200 p-6">
-          <h2 class="font-semibold text-lg text-gray-900 mb-4">{anket.soru}</h2>
+        <div class="bg-zinc-900 border border-zinc-800 rounded-2xl p-6">
+          <h2 class="font-semibold text-white mb-5">{anket.soru}</h2>
           <SonucBar secenek={anket.secenek_a} oy={anket.oy_a} toplamOy={toplam} />
           <SonucBar secenek={anket.secenek_b} oy={anket.oy_b} toplamOy={toplam} />
-          <p class="text-xs text-gray-400 mt-3 text-right">{toplam} toplam oy</p>
+          <p class="text-xs text-zinc-600 mt-3 text-right">{toplam} toplam oy</p>
         </div>
       {/each}
     </div>
