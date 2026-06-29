@@ -1,23 +1,15 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 
-const { mockVerifyOtp, mockAdminSignOut, mockFrom } = vi.hoisted(() => ({
-  mockVerifyOtp: vi.fn(),
-  mockAdminSignOut: vi.fn().mockResolvedValue({}),
+const { mockFrom } = vi.hoisted(() => ({
   mockFrom: vi.fn(),
 }));
 
 vi.mock('$lib/supabase', () => ({
-  supabaseServer: {
-    auth: {
-      verifyOtp: mockVerifyOtp,
-      admin: { signOut: mockAdminSignOut },
-    },
-    from: mockFrom,
-  }
+  supabaseServer: { from: mockFrom }
 }));
 
 vi.mock('$lib/hash', () => ({
-  emailHash: vi.fn().mockResolvedValue('test-hash-value'),
+  emailHash: vi.fn().mockResolvedValue('test-ip-hash'),
 }));
 
 vi.mock('$env/static/public', () => ({
@@ -31,6 +23,19 @@ vi.mock('$env/static/private', () => ({
 
 import { POST } from '../routes/api/oy/+server';
 
+const mockGetClientAddress = vi.fn().mockReturnValue('127.0.0.1');
+
+function makeRequest(body: object) {
+  return {
+    request: new Request('http://localhost/api/oy', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body)
+    }),
+    getClientAddress: mockGetClientAddress
+  } as any;
+}
+
 function makeAnketChain() {
   return {
     select: vi.fn().mockReturnThis(),
@@ -39,86 +44,51 @@ function makeAnketChain() {
   };
 }
 
+function makeCountChain(count = 5) {
+  const chain: any = {
+    select: vi.fn().mockReturnThis(),
+    eq: vi.fn().mockReturnThis(),
+    then: (resolve: (v: any) => any) => Promise.resolve({ count, error: null }).then(resolve),
+    catch: (reject: (e: any) => any) => Promise.resolve({ count, error: null }).catch(reject),
+  };
+  chain.select.mockReturnValue(chain);
+  chain.eq.mockReturnValue(chain);
+  return chain;
+}
+
 describe('POST /api/oy', () => {
-  beforeEach(() => {
-    mockVerifyOtp.mockReset();
-    mockFrom.mockReset();
-  });
+  beforeEach(() => { mockFrom.mockReset(); });
 
   it('geçerli istek için oy kaydeder ve sonuçları döner', async () => {
-    mockVerifyOtp.mockResolvedValue({ data: { session: { access_token: 'tok' }, user: {} }, error: null });
-
-    let callCount = 0;
+    let oylarCallCount = 0;
     mockFrom.mockImplementation((table: string) => {
-      callCount++;
       if (table === 'anketler') return makeAnketChain();
-      if (table === 'oylar' && callCount === 2) {
-        return { insert: vi.fn().mockResolvedValue({ error: null }) };
-      }
-      // count queries for oylar — must be thenable so await resolves correctly
-      const countResult = { count: 5, error: null };
-      const thenableChain: any = {
-        select: vi.fn().mockReturnThis(),
-        eq: vi.fn().mockReturnThis(),
-        then: (resolve: (v: any) => any) => Promise.resolve(countResult).then(resolve),
-        catch: (reject: (e: any) => any) => Promise.resolve(countResult).catch(reject),
-      };
-      thenableChain.select.mockReturnValue(thenableChain);
-      thenableChain.eq.mockReturnValue(thenableChain);
-      return thenableChain;
+      oylarCallCount++;
+      if (oylarCallCount === 1) return { insert: vi.fn().mockResolvedValue({ error: null }) };
+      return makeCountChain(5);
     });
 
-    const req = new Request('http://localhost/api/oy', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email: 'test@example.com', anketId: 'anket-uuid', kod: '123456', secim: 'A' })
-    });
-    const res = await POST({ request: req } as any);
+    const res = await POST(makeRequest({ anketId: 'anket-uuid', secim: 'A' }));
     expect(res.status).toBe(200);
+    const body = await res.json();
+    expect(body.ok).toBe(true);
+    expect(body.oylar).toEqual({ a: 5, b: 5 });
   });
 
   it('geçersiz secim için 400 döner', async () => {
-    const req = new Request('http://localhost/api/oy', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email: 'test@example.com', anketId: 'anket-uuid', kod: '123456', secim: 'C' })
-    });
-    const res = await POST({ request: req } as any);
+    const res = await POST(makeRequest({ anketId: 'anket-uuid', secim: 'C' }));
     expect(res.status).toBe(400);
   });
 
-  it('yanlış OTP için 401 döner', async () => {
-    mockVerifyOtp.mockResolvedValue({ error: { message: 'Invalid OTP' } });
-    mockFrom.mockImplementation(() => makeAnketChain());
-
-    const req = new Request('http://localhost/api/oy', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email: 'test@example.com', anketId: 'anket-uuid', kod: '000000', secim: 'A' })
-    });
-    const res = await POST({ request: req } as any);
-    expect(res.status).toBe(401);
-  });
-
-  it('mükerrer oy için 409 ve Türkçe hata mesajı döner', async () => {
-    mockVerifyOtp.mockResolvedValue({ data: { session: null }, error: null });
-
-    let callCount = 0;
+  it('mükerrer IP için 409 ve Türkçe hata mesajı döner', async () => {
     mockFrom.mockImplementation((table: string) => {
-      callCount++;
       if (table === 'anketler') return makeAnketChain();
-      // insert returns duplicate key error
       return { insert: vi.fn().mockResolvedValue({ error: { code: '23505' } }) };
     });
 
-    const req = new Request('http://localhost/api/oy', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email: 'test@example.com', anketId: 'anket-uuid', kod: '123456', secim: 'B' })
-    });
-    const res = await POST({ request: req } as any);
+    const res = await POST(makeRequest({ anketId: 'anket-uuid', secim: 'B' }));
     expect(res.status).toBe(409);
     const body = await res.json();
-    expect(body.error).toBe('Bu anket için zaten oy kullandınız');
+    expect(body.error).toBe('Bu anket için bu cihazdan zaten oy kullandınız');
   });
 });

@@ -3,14 +3,12 @@ import type { RequestHandler } from './$types';
 import { supabaseServer } from '$lib/supabase';
 import { emailHash } from '$lib/hash';
 
-export const POST: RequestHandler = async ({ request }) => {
+export const POST: RequestHandler = async ({ request, getClientAddress }) => {
   const body = await request.json().catch(() => null);
-  const email: string = body?.email?.trim() ?? '';
   const anketId: string = body?.anketId?.trim() ?? '';
-  const kod: string = body?.kod?.trim() ?? '';
   const secim: string = body?.secim ?? '';
 
-  if (!email || !anketId || !kod || !['A', 'B'].includes(secim)) {
+  if (!anketId || !['A', 'B'].includes(secim)) {
     return json({ error: 'Geçersiz istek' }, { status: 400 });
   }
 
@@ -29,34 +27,21 @@ export const POST: RequestHandler = async ({ request }) => {
     return json({ error: 'Bu anket kapalı' }, { status: 403 });
   }
 
-  // OTP'yi doğrula
-  const { data: verifyData, error: otpError } = await supabaseServer.auth.verifyOtp({
-    email,
-    token: kod,
-    type: 'email'
-  });
-
-  if (otpError) {
-    return json({ error: 'Kod geçersiz veya süresi dolmuş' }, { status: 401 });
-  }
-
-  const hash = await emailHash(email, anketId);
+  // IP adresini al ve hash'le
+  const ip = request.headers.get('x-forwarded-for')?.split(',')[0].trim()
+    ?? getClientAddress();
+  const ipHash = await emailHash(ip, anketId);
 
   // Oyu kaydet (UNIQUE constraint duplicate'ı engeller)
   const { error: insertError } = await supabaseServer
     .from('oylar')
-    .insert({ anket_id: anketId, email_hash: hash, secim });
+    .insert({ anket_id: anketId, email_hash: ipHash, secim });
 
   if (insertError) {
     if (insertError.code === '23505') {
-      return json({ error: 'Bu anket için zaten oy kullandınız' }, { status: 409 });
+      return json({ error: 'Bu anket için bu cihazdan zaten oy kullandınız' }, { status: 409 });
     }
     return json({ error: 'Oy kaydedilemedi, tekrar deneyin' }, { status: 500 });
-  }
-
-  // Oturum tek kullanımlık — oyu kaydettikten sonra kapat
-  if (verifyData?.session) {
-    await supabaseServer.auth.admin.signOut(verifyData.session.access_token, 'local');
   }
 
   // Güncel sonuçları döndür
