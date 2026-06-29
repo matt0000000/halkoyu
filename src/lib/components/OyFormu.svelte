@@ -27,20 +27,19 @@
 </script>
 
 {#if tamam}
-  <p class="text-green-600 font-medium text-center py-4">Oyunuz kaydedildi!</p>
+  <p class="text-green-600 font-semibold text-center py-6 text-lg col-span-2">Oyunuz kaydedildi!</p>
 {:else}
-  <div class="space-y-2">
-    <p class="text-sm text-gray-600 mb-3">Oyunuzu kullanmak için bir seçenek seçin:</p>
-    <button
-      onclick={() => oyKullan('A')}
-      disabled={yukleniyor}
-      class="w-full py-2 px-4 rounded border-2 border-gray-300 hover:border-blue-500 hover:bg-blue-50 disabled:opacity-50 transition-colors"
-    >{yukleniyor ? '...' : secenekA}</button>
-    <button
-      onclick={() => oyKullan('B')}
-      disabled={yukleniyor}
-      class="w-full py-2 px-4 rounded border-2 border-gray-300 hover:border-blue-500 hover:bg-blue-50 disabled:opacity-50 transition-colors"
-    >{yukleniyor ? '...' : secenekB}</button>
-    {#if hata}<p class="text-red-500 text-sm mt-2">{hata}</p>{/if}
-  </div>
+  <button
+    onclick={() => oyKullan('A')}
+    disabled={yukleniyor}
+    class="py-6 px-4 rounded-xl border-2 border-gray-300 hover:border-blue-500 hover:bg-blue-50 disabled:opacity-50 transition-colors text-lg font-medium"
+  >{secenekA}</button>
+  <button
+    onclick={() => oyKullan('B')}
+    disabled={yukleniyor}
+    class="py-6 px-4 rounded-xl border-2 border-gray-300 hover:border-blue-500 hover:bg-blue-50 disabled:opacity-50 transition-colors text-lg font-medium"
+  >{secenekB}</button>
+  {#if hata}
+    <p class="text-red-500 text-sm text-center col-span-2 mt-2">{hata}</p>
+  {/if}
 {/if}
