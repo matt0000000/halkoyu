@@ -28,7 +28,7 @@ export const POST: RequestHandler = async ({ request }) => {
 
   const { error } = await supabaseServer.auth.signInWithOtp({
     email,
-    options: { shouldCreateUser: false }
+    options: { shouldCreateUser: true }
   });
 
   if (error) {
