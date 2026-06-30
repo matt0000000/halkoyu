@@ -33,46 +33,57 @@
   }
 
   function satirClass(secim: 'A' | 'B') {
-    if (secilen === secim) {
-      return 'bg-[#00D964] text-black';
-    }
-    if (secilen) {
-      return 'bg-transparent text-white/25';
-    }
-    return 'bg-transparent text-white hover:bg-white/[0.04]';
+    if (secilen === secim) return 'bg-[#00D964] text-black';
+    if (secilen) return 'text-white/20';
+    return 'text-white hover:bg-white/[0.06] active:bg-white/[0.1]';
   }
 </script>
 
+<!-- Seçenek A -->
 <button
   onclick={() => oyKullan('A')}
   disabled={yukleniyor || !!secilen}
-  class="w-full flex items-center justify-between px-5 py-4 transition-colors duration-200 disabled:cursor-default {satirClass('A')}"
+  class="w-full flex items-center justify-between px-5 py-5 transition-all duration-200 disabled:cursor-default {satirClass('A')}"
 >
-  <span class="font-semibold text-[16px] flex items-center gap-2">
+  <span class="font-semibold text-[17px] flex items-center gap-2.5 text-left">
     {#if secilen === 'A'}
-      <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M13.5 4.5L6 12l-3.5-3.5" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <svg width="15" height="15" viewBox="0 0 16 16" fill="none" class="shrink-0">
+        <path d="M13.5 4.5L6 12l-3.5-3.5" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    {:else if !secilen}
+      <span class="w-5 h-5 rounded-full border-2 border-white/20 shrink-0"></span>
     {/if}
     {secenekA}
   </span>
-  <span class="font-bold tabular-nums text-[16px]">{yuzdeA}%</span>
+  {#if secilen}
+    <span class="font-bold tabular-nums text-[16px] shrink-0 ml-4">{yuzdeA}%</span>
+  {/if}
 </button>
 
-<div class="h-px bg-white/10"></div>
+<div class="h-px bg-white/[0.07]"></div>
 
+<!-- Seçenek B -->
 <button
   onclick={() => oyKullan('B')}
   disabled={yukleniyor || !!secilen}
-  class="w-full flex items-center justify-between px-5 py-4 transition-colors duration-200 disabled:cursor-default {satirClass('B')}"
+  class="w-full flex items-center justify-between px-5 py-5 transition-all duration-200 disabled:cursor-default {satirClass('B')}"
 >
-  <span class="font-semibold text-[16px] flex items-center gap-2">
+  <span class="font-semibold text-[17px] flex items-center gap-2.5 text-left">
     {#if secilen === 'B'}
-      <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M13.5 4.5L6 12l-3.5-3.5" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <svg width="15" height="15" viewBox="0 0 16 16" fill="none" class="shrink-0">
+        <path d="M13.5 4.5L6 12l-3.5-3.5" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    {:else if !secilen}
+      <span class="w-5 h-5 rounded-full border-2 border-white/20 shrink-0"></span>
     {/if}
     {secenekB}
   </span>
-  <span class="font-bold tabular-nums text-[16px]">{yuzdeB}%</span>
+  {#if secilen}
+    <span class="font-bold tabular-nums text-[16px] shrink-0 ml-4">{yuzdeB}%</span>
+  {/if}
 </button>
 
 {#if hata}
-  <p class="text-red-400/80 text-[13px] text-center py-2 bg-red-950/20">{hata}</p>
+  <div class="h-px bg-white/[0.07]"></div>
+  <p class="text-red-400/80 text-[13px] text-center py-3 px-5">{hata}</p>
 {/if}

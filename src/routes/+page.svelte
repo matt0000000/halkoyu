@@ -38,7 +38,7 @@
     </div>
 
     <!-- Oy satırları -->
-    <div class="border border-white/10 rounded-lg overflow-hidden mb-3">
+    <div class="border border-white/[0.15] rounded-lg overflow-hidden mb-3">
       <OyFormu
         anketId={data.anket.id}
         secenekA={data.anket.secenek_a}
