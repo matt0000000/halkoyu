@@ -16,7 +16,7 @@
 </script>
 
 <svelte:head>
-  <title>Halk Oylaması</title>
+  <title>referandoom</title>
 </svelte:head>
 
 <div class="max-w-3xl mx-auto px-6 py-20">

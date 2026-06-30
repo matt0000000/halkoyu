@@ -36,7 +36,6 @@
     disabled={yukleniyor}
     class="group py-8 px-6 rounded-2xl border border-zinc-700 bg-zinc-900 hover:border-indigo-500 hover:bg-indigo-950 disabled:opacity-40 transition-all duration-200 text-left"
   >
-    <span class="block text-xs font-semibold uppercase tracking-widest text-zinc-500 group-hover:text-indigo-400 mb-2 transition-colors">Seçenek A</span>
     <span class="block text-xl font-bold text-white">{secenekA}</span>
   </button>
   <button
@@ -44,7 +43,6 @@
     disabled={yukleniyor}
     class="group py-8 px-6 rounded-2xl border border-zinc-700 bg-zinc-900 hover:border-indigo-500 hover:bg-indigo-950 disabled:opacity-40 transition-all duration-200 text-left"
   >
-    <span class="block text-xs font-semibold uppercase tracking-widest text-zinc-500 group-hover:text-indigo-400 mb-2 transition-colors">Seçenek B</span>
     <span class="block text-xl font-bold text-white">{secenekB}</span>
   </button>
   {#if hata}

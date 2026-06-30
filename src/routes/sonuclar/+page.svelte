@@ -6,7 +6,7 @@
 </script>
 
 <svelte:head>
-  <title>Geçmiş Sonuçlar — Halk Oylaması</title>
+  <title>Geçmiş Sonuçlar — referandoom</title>
 </svelte:head>
 
 <div class="max-w-3xl mx-auto px-6 py-14">
