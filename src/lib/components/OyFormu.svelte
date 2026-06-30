@@ -10,6 +10,9 @@
   let hata = $state('');
   let yukleniyor = $state(false);
 
+  const RENK_A = '#00C896';
+  const RENK_B = '#FF4B6E';
+
   async function oyKullan(secim: 'A' | 'B') {
     if (secilen) return;
     hata = '';
@@ -26,40 +29,36 @@
     onOyKaydedildi?.(secim, data.oylar);
   }
 
-  function butonClass(secim: 'A' | 'B') {
+  function stil(secim: 'A' | 'B') {
+    const renk = secim === 'A' ? RENK_A : RENK_B;
     if (!secilen) {
-      return 'bg-white/[0.07] hover:bg-white/[0.12] active:scale-[0.97]';
+      return `background: ${renk}1A; color: ${renk}; border: 1px solid ${renk}40;`;
     }
     if (secilen === secim) {
-      return 'bg-[#0A84FF] shadow-lg shadow-[#0A84FF]/30 scale-[1.02]';
+      return `background: ${renk}; color: #08110d; border: 1px solid ${renk};`;
     }
-    return 'bg-white/[0.04] opacity-40';
+    return `background: transparent; color: rgba(255,255,255,0.25); border: 1px solid rgba(255,255,255,0.08);`;
   }
 </script>
 
-<!-- Sol buton -->
 <button
   onclick={() => oyKullan('A')}
   disabled={yukleniyor || !!secilen}
-  class="flex items-center justify-center min-h-32 px-5 py-7 rounded-2xl transition-all duration-300 shadow-lg shadow-black/20 disabled:cursor-default {butonClass('A')}"
+  class="flex items-center justify-center min-h-14 px-4 py-3 rounded-xl font-bold text-[15px] transition-all duration-200 active:scale-[0.96] disabled:cursor-default {!secilen ? 'hover:brightness-125' : ''} {secilen === 'A' ? 'scale-[1.02]' : ''}"
+  style={stil('A')}
 >
-  <span class="text-xl sm:text-2xl font-bold text-white text-center leading-tight">{secenekA}</span>
+  {secenekA}
 </button>
 
-<!-- VS -->
-<div class="flex items-center justify-center">
-  <span class="text-[13px] font-bold text-white/20 tracking-widest select-none">VS</span>
-</div>
-
-<!-- Sağ buton -->
 <button
   onclick={() => oyKullan('B')}
   disabled={yukleniyor || !!secilen}
-  class="flex items-center justify-center min-h-32 px-5 py-7 rounded-2xl transition-all duration-300 shadow-lg shadow-black/20 disabled:cursor-default {butonClass('B')}"
+  class="flex items-center justify-center min-h-14 px-4 py-3 rounded-xl font-bold text-[15px] transition-all duration-200 active:scale-[0.96] disabled:cursor-default {!secilen ? 'hover:brightness-125' : ''} {secilen === 'B' ? 'scale-[1.02]' : ''}"
+  style={stil('B')}
 >
-  <span class="text-xl sm:text-2xl font-bold text-white text-center leading-tight">{secenekB}</span>
+  {secenekB}
 </button>
 
 {#if hata}
-  <p class="col-span-3 text-red-400/80 text-[13px] text-center mt-2">{hata}</p>
+  <p class="col-span-2 text-red-400/80 text-[13px] text-center mt-1">{hata}</p>
 {/if}

@@ -9,22 +9,22 @@
   <title>Geçmiş Sonuçlar — referandoom</title>
 </svelte:head>
 
-<div class="max-w-3xl mx-auto px-6 py-14">
-  <h1 class="text-2xl font-bold text-white mb-10">Geçmiş Anket Sonuçları</h1>
+<div class="max-w-2xl mx-auto px-5 py-14">
+  <h1 class="text-2xl font-bold text-white mb-8">Geçmiş Anket Sonuçları</h1>
 
   {#if data.anketler.length === 0}
-    <div class="text-center py-20 text-zinc-500">
+    <div class="text-center py-20 text-white/30">
       <p>Henüz tamamlanmış anket bulunmuyor.</p>
     </div>
   {:else}
-    <div class="space-y-4">
+    <div class="space-y-3">
       {#each data.anketler as anket (anket.id)}
         {@const toplam = anket.oy_a + anket.oy_b}
-        <div class="bg-zinc-900 border border-zinc-800 rounded-2xl p-6">
+        <div class="rounded-2xl border border-white/10 bg-[#15161a] p-6">
           <h2 class="font-semibold text-white mb-5">{anket.soru}</h2>
-          <SonucBar secenek={anket.secenek_a} oy={anket.oy_a} toplamOy={toplam} />
-          <SonucBar secenek={anket.secenek_b} oy={anket.oy_b} toplamOy={toplam} />
-          <p class="text-xs text-zinc-600 mt-3 text-right">{toplam} toplam oy</p>
+          <SonucBar secenek={anket.secenek_a} oy={anket.oy_a} toplamOy={toplam} taraf="A" />
+          <SonucBar secenek={anket.secenek_b} oy={anket.oy_b} toplamOy={toplam} taraf="B" />
+          <p class="text-[11px] text-white/25 mt-3 text-right">{toplam.toLocaleString('tr-TR')} toplam oy</p>
         </div>
       {/each}
     </div>
