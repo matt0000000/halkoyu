@@ -20,25 +20,25 @@
   <title>referandoom</title>
 </svelte:head>
 
-<div class="min-h-[calc(100vh-49px)] flex flex-col justify-center px-5 py-12 max-w-xl mx-auto w-full">
+<div class="min-h-[calc(100vh-64px)] flex flex-col justify-center px-5 py-12 max-w-lg mx-auto w-full">
   {#if !data.anket}
     <div class="text-center">
-      <p class="text-xl font-semibold text-white/60 mb-3">Şu an aktif anket yok.</p>
-      <a href="/sonuclar" class="text-[#00D964] text-[15px] hover:opacity-80 transition-opacity">
+      <p class="text-lg font-medium text-[#5f6368] mb-3">Şu an aktif anket yok.</p>
+      <a href="/sonuclar" class="text-[#1a73e8] text-[15px] hover:underline">
         Geçmiş sonuçlara bak →
       </a>
     </div>
   {:else}
-    <!-- Soru -->
-    <div class="mb-6">
-      <p class="text-[11px] font-semibold uppercase tracking-[0.12em] text-white/35 mb-2">Günün Sorusu</p>
-      <h1 class="text-[24px] sm:text-[30px] font-bold text-white leading-snug tracking-tight">
-        {data.anket.soru}
-      </h1>
-    </div>
+    <!-- Label -->
+    <p class="text-[12px] font-medium uppercase tracking-[0.1em] text-[#1a73e8] mb-3">Günün Sorusu</p>
 
-    <!-- Oy satırları -->
-    <div class="border border-white/[0.15] rounded-lg overflow-hidden mb-3">
+    <!-- Soru -->
+    <h1 class="text-[26px] sm:text-[32px] font-medium text-[#202124] leading-snug mb-8">
+      {data.anket.soru}
+    </h1>
+
+    <!-- Kart -->
+    <div class="bg-white rounded-2xl shadow-[0_1px_3px_rgba(60,64,67,0.3),0_4px_8px_rgba(60,64,67,0.15)] overflow-hidden mb-3">
       <OyFormu
         anketId={data.anket.id}
         secenekA={data.anket.secenek_a}
@@ -50,11 +50,14 @@
       />
     </div>
 
+    <!-- Footer -->
     <div class="flex justify-between items-center px-1">
-      <span class="text-[12px] text-white/30 tabular-nums">{toplamOy.toLocaleString('tr-TR')} oy</span>
+      <span class="text-[12px] text-[#80868b] tabular-nums">{toplamOy.toLocaleString('tr-TR')} oy</span>
       {#if secilenSecim}
-        <span class="text-[12px] font-medium text-[#00D964] flex items-center gap-1">
-          <svg width="12" height="12" viewBox="0 0 16 16" fill="none"><path d="M13.5 4.5L6 12l-3.5-3.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span class="text-[12px] font-medium text-[#1e8e3e] flex items-center gap-1">
+          <svg width="12" height="12" viewBox="0 0 16 16" fill="none">
+            <path d="M13.5 4.5L6 12l-3.5-3.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
           Oyunuz kaydedildi
         </span>
       {/if}

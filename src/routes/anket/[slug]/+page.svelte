@@ -14,24 +14,24 @@
   <title>{data.anket.soru} — referandoom</title>
 </svelte:head>
 
-<div class="max-w-2xl mx-auto px-5 py-14">
-  <a href="/sonuclar" class="text-[13px] text-white/35 hover:text-white/70 transition-colors mb-8 inline-block">
+<div class="max-w-2xl mx-auto px-5 py-12">
+  <a href="/sonuclar" class="text-[14px] font-medium text-[#1a73e8] hover:bg-[#1a73e8]/[0.08] px-3 py-2 rounded-full transition-colors mb-6 inline-flex items-center gap-1">
     ← Geçmiş Sonuçlar
   </a>
 
-  <div class="mb-4 flex items-start justify-between gap-4">
-    <h1 class="text-2xl font-bold text-white leading-snug">{data.anket.soru}</h1>
-    <span class="text-[11px] px-3 py-1 rounded-full shrink-0 font-medium border
-      {data.anket.aktif ? 'bg-[#00D964]/10 text-[#00D964] border-[#00D964]/30' : 'bg-white/[0.04] text-white/30 border-white/10'}">
+  <div class="flex items-start justify-between gap-4 mb-6 mt-2">
+    <h1 class="text-[24px] font-medium text-[#202124] leading-snug">{data.anket.soru}</h1>
+    <span class="text-[12px] px-3 py-1 rounded-full shrink-0 font-medium
+      {data.anket.aktif ? 'bg-[#e6f4ea] text-[#1e8e3e]' : 'bg-[#f1f3f4] text-[#80868b]'}">
       {data.anket.aktif ? 'Aktif' : 'Kapalı'}
     </span>
   </div>
 
-  <div class="border border-white/10 rounded-lg overflow-hidden">
+  <div class="bg-white rounded-2xl shadow-[0_1px_3px_rgba(60,64,67,0.3),0_4px_8px_rgba(60,64,67,0.15)] overflow-hidden">
     <SonucBar secenek={data.anket.secenek_a} oy={oyA} {toplamOy} kazanan={aKazandi} />
-    <div class="h-px bg-white/10"></div>
+    <div class="h-px bg-[#e8eaed]"></div>
     <SonucBar secenek={data.anket.secenek_b} oy={oyB} {toplamOy} kazanan={!aKazandi} />
-    <div class="h-px bg-white/10"></div>
-    <p class="text-[11px] text-white/25 px-5 py-2 text-right">{toplamOy.toLocaleString('tr-TR')} toplam oy</p>
+    <div class="h-px bg-[#e8eaed]"></div>
+    <p class="text-[12px] text-[#80868b] px-5 py-3 text-right">{toplamOy.toLocaleString('tr-TR')} toplam oy</p>
   </div>
 </div>
