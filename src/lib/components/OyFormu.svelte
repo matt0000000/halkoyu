@@ -34,14 +34,14 @@
   <button
     onclick={() => oyKullan('A')}
     disabled={yukleniyor}
-    class="group py-8 px-6 rounded-2xl border border-zinc-700 bg-zinc-900 hover:border-indigo-500 hover:bg-indigo-950 disabled:opacity-40 transition-all duration-200 text-left"
+    class="group py-8 px-6 rounded-2xl border border-zinc-700 bg-zinc-900 hover:border-indigo-500 hover:bg-indigo-950 disabled:opacity-40 transition-all duration-200 text-center"
   >
     <span class="block text-xl font-bold text-white">{secenekA}</span>
   </button>
   <button
     onclick={() => oyKullan('B')}
     disabled={yukleniyor}
-    class="group py-8 px-6 rounded-2xl border border-zinc-700 bg-zinc-900 hover:border-indigo-500 hover:bg-indigo-950 disabled:opacity-40 transition-all duration-200 text-left"
+    class="group py-8 px-6 rounded-2xl border border-zinc-700 bg-zinc-900 hover:border-indigo-500 hover:bg-indigo-950 disabled:opacity-40 transition-all duration-200 text-center"
   >
     <span class="block text-xl font-bold text-white">{secenekB}</span>
   </button>
