@@ -8,10 +8,12 @@
   let oyA = $state(data.oy_a);
   let oyB = $state(data.oy_b);
   let toplamOy = $derived(oyA + oyB);
+  let secilenSecim = $state<'A' | 'B' | null>(null);
 
-  function oyKaydedildi(oylar: { a: number; b: number }) {
+  function oyKaydedildi(secim: 'A' | 'B', oylar: { a: number; b: number }) {
     oyA = oylar.a;
     oyB = oylar.b;
+    secilenSecim = secim;
   }
 </script>
 
@@ -52,8 +54,8 @@
         <p class="text-[11px] font-semibold uppercase tracking-[0.12em] text-white/25">Anlık Sonuçlar</p>
         <p class="text-[12px] text-white/25">{toplamOy.toLocaleString('tr-TR')} oy</p>
       </div>
-      <SonucBar secenek={data.anket.secenek_a} oy={oyA} {toplamOy} />
-      <SonucBar secenek={data.anket.secenek_b} oy={oyB} {toplamOy} />
+      <SonucBar secenek={data.anket.secenek_a} oy={oyA} {toplamOy} aktif={secilenSecim === 'A'} sonucGosteriliyor={secilenSecim !== null} />
+      <SonucBar secenek={data.anket.secenek_b} oy={oyB} {toplamOy} aktif={secilenSecim === 'B'} sonucGosteriliyor={secilenSecim !== null} />
     </div>
   {/if}
 </div>
