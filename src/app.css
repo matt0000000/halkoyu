@@ -1,6 +1,12 @@
 @import 'tailwindcss';
 
 @theme {
-  --color-brand: #6366f1;
-  --color-brand-dark: #4f46e5;
+  --color-brand: #0A84FF;
+  --color-brand-dark: #0071E3;
+  --font-sans: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', sans-serif;
+}
+
+* {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }

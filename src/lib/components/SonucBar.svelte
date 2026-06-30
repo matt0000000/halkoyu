@@ -8,15 +8,15 @@
   let yuzde = $derived(toplamOy === 0 ? 0 : Math.round((oy / toplamOy) * 100));
 </script>
 
-<div class="mb-4">
-  <div class="flex justify-between text-sm mb-2">
-    <span class="font-medium text-zinc-200">{secenek}</span>
-    <span class="text-zinc-400 tabular-nums">{yuzde}% <span class="text-zinc-600">({oy} oy)</span></span>
+<div class="mb-4 last:mb-0">
+  <div class="flex justify-between text-[13px] mb-1.5">
+    <span class="font-medium text-white/70">{secenek}</span>
+    <span class="tabular-nums text-white/30">{yuzde}% <span class="text-white/20">({oy.toLocaleString('tr-TR')})</span></span>
   </div>
-  <div class="w-full bg-zinc-800 rounded-full h-2.5">
+  <div class="w-full bg-white/[0.08] rounded-full h-1.5">
     <div
-      class="bg-indigo-500 h-2.5 rounded-full transition-all duration-500"
-      style="width: {yuzde}%"
+      class="h-1.5 rounded-full transition-all duration-700"
+      style="width: {yuzde}%; background: #0A84FF;"
     ></div>
   </div>
 </div>

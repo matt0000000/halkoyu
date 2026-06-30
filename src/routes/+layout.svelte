@@ -3,16 +3,16 @@
   let { children } = $props();
 </script>
 
-<div class="min-h-screen bg-zinc-950 text-zinc-100">
-  <header class="border-b border-zinc-800 px-6 py-4">
-    <div class="max-w-3xl mx-auto flex justify-between items-center">
-      <a href="/" class="flex items-center gap-2 hover:text-indigo-400 transition-colors group">
-        <span class="flex items-center justify-center w-7 h-7 rounded-lg bg-indigo-600 group-hover:bg-indigo-500 transition-colors">
+<div class="min-h-screen bg-black text-white" style="font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', sans-serif;">
+  <header class="sticky top-0 z-10 backdrop-blur-xl bg-black/70 border-b border-white/[0.08] px-6 py-3">
+    <div class="max-w-4xl mx-auto flex justify-between items-center">
+      <a href="/" class="flex items-center gap-2.5 group">
+        <span class="flex items-center justify-center w-7 h-7 rounded-lg bg-[#0A84FF] shadow-lg shadow-[#0A84FF]/30">
           <span class="text-white font-black text-sm leading-none">r</span>
         </span>
-        <span class="text-base font-semibold tracking-tight text-white group-hover:text-indigo-400 transition-colors">referandoom</span>
+        <span class="text-[15px] font-semibold text-white/90 group-hover:text-white transition-colors">referandoom</span>
       </a>
-      <a href="/sonuclar" class="text-sm text-zinc-400 hover:text-indigo-400 transition-colors">
+      <a href="/sonuclar" class="text-[13px] font-medium text-white/40 hover:text-white/70 transition-colors">
         Geçmiş Sonuçlar
       </a>
     </div>

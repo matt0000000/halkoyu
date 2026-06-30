@@ -30,36 +30,34 @@
 
 {#if tamam}
   <div class="col-span-3 text-center py-6">
-    <p class="text-indigo-400 font-bold text-xl mb-1">Oyunuz kaydedildi!</p>
-    <p class="text-zinc-500 text-sm">"{secilen === 'A' ? secenekA : secenekB}" için oy kullandınız</p>
+    <p class="text-[#0A84FF] font-semibold text-lg mb-1">Oyunuz kaydedildi</p>
+    <p class="text-white/30 text-sm">"{secilen === 'A' ? secenekA : secenekB}" için oy kullandınız</p>
   </div>
 {:else}
   <!-- Sol buton -->
   <button
     onclick={() => oyKullan('A')}
     disabled={yukleniyor}
-    class="group relative flex items-center justify-center min-h-36 px-6 py-8 rounded-2xl border-2 border-zinc-800 bg-zinc-900 hover:border-indigo-500 hover:bg-indigo-950/40 disabled:opacity-40 transition-all duration-200 active:scale-[0.98]"
+    class="group flex items-center justify-center min-h-32 px-5 py-7 rounded-2xl bg-white/[0.07] hover:bg-white/[0.12] active:scale-[0.97] disabled:opacity-40 transition-all duration-150 shadow-lg shadow-black/20"
   >
-    <span class="text-2xl sm:text-3xl font-black text-white group-hover:text-indigo-200 transition-colors text-center">{secenekA}</span>
-    <span class="absolute inset-0 rounded-2xl ring-indigo-500/0 group-hover:ring-indigo-500/20 ring-4 transition-all duration-200"></span>
+    <span class="text-xl sm:text-2xl font-bold text-white text-center leading-tight">{secenekA}</span>
   </button>
 
   <!-- VS -->
-  <div class="flex items-center justify-center px-1">
-    <span class="text-2xl font-black text-zinc-600 select-none">VS</span>
+  <div class="flex items-center justify-center">
+    <span class="text-[13px] font-bold text-white/20 tracking-widest select-none">VS</span>
   </div>
 
   <!-- Sağ buton -->
   <button
     onclick={() => oyKullan('B')}
     disabled={yukleniyor}
-    class="group relative flex items-center justify-center min-h-36 px-6 py-8 rounded-2xl border-2 border-zinc-800 bg-zinc-900 hover:border-indigo-500 hover:bg-indigo-950/40 disabled:opacity-40 transition-all duration-200 active:scale-[0.98]"
+    class="group flex items-center justify-center min-h-32 px-5 py-7 rounded-2xl bg-white/[0.07] hover:bg-white/[0.12] active:scale-[0.97] disabled:opacity-40 transition-all duration-150 shadow-lg shadow-black/20"
   >
-    <span class="text-2xl sm:text-3xl font-black text-white group-hover:text-indigo-200 transition-colors text-center">{secenekB}</span>
-    <span class="absolute inset-0 rounded-2xl ring-indigo-500/0 group-hover:ring-indigo-500/20 ring-4 transition-all duration-200"></span>
+    <span class="text-xl sm:text-2xl font-bold text-white text-center leading-tight">{secenekB}</span>
   </button>
 
   {#if hata}
-    <p class="col-span-3 text-red-400 text-sm text-center mt-1">{hata}</p>
+    <p class="col-span-3 text-red-400/80 text-[13px] text-center mt-2">{hata}</p>
   {/if}
 {/if}

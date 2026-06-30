@@ -19,25 +19,25 @@
   <title>referandoom</title>
 </svelte:head>
 
-<div class="min-h-[calc(100vh-57px)] flex flex-col justify-center px-6 py-10 max-w-4xl mx-auto w-full">
+<div class="min-h-[calc(100vh-49px)] flex flex-col justify-center px-5 py-12 max-w-2xl mx-auto w-full">
   {#if !data.anket}
-    <div class="text-center text-zinc-500">
-      <p class="text-2xl font-medium text-zinc-300 mb-4">Şu an aktif anket bulunmuyor.</p>
-      <a href="/sonuclar" class="text-indigo-400 hover:text-indigo-300 transition-colors">
+    <div class="text-center">
+      <p class="text-xl font-semibold text-white/60 mb-3">Şu an aktif anket yok.</p>
+      <a href="/sonuclar" class="text-[#0A84FF] text-[15px] hover:opacity-80 transition-opacity">
         Geçmiş sonuçlara bak →
       </a>
     </div>
   {:else}
     <!-- Soru -->
     <div class="text-center mb-10">
-      <p class="text-xs font-semibold uppercase tracking-widest text-indigo-400 mb-3">Günün Sorusu</p>
-      <h1 class="text-3xl sm:text-5xl font-black text-white leading-tight">
+      <p class="text-[11px] font-semibold uppercase tracking-[0.15em] text-white/30 mb-4">Günün Sorusu</p>
+      <h1 class="text-[28px] sm:text-[38px] font-bold text-white leading-snug tracking-tight">
         {data.anket.soru}
       </h1>
     </div>
 
     <!-- Oy butonları -->
-    <div class="grid grid-cols-[1fr_auto_1fr] items-stretch gap-4 mb-8">
+    <div class="grid grid-cols-[1fr_40px_1fr] items-stretch gap-3 mb-6">
       <OyFormu
         anketId={data.anket.id}
         secenekA={data.anket.secenek_a}
@@ -47,10 +47,10 @@
     </div>
 
     <!-- Sonuçlar -->
-    <div class="bg-zinc-900/60 border border-zinc-800 rounded-2xl p-5 backdrop-blur-sm">
+    <div class="rounded-2xl bg-white/[0.05] backdrop-blur-sm p-5">
       <div class="flex justify-between items-center mb-4">
-        <p class="text-xs font-semibold uppercase tracking-widest text-zinc-500">Anlık Sonuçlar</p>
-        <p class="text-xs text-zinc-600">{toplamOy.toLocaleString('tr-TR')} oy</p>
+        <p class="text-[11px] font-semibold uppercase tracking-[0.12em] text-white/25">Anlık Sonuçlar</p>
+        <p class="text-[12px] text-white/25">{toplamOy.toLocaleString('tr-TR')} oy</p>
       </div>
       <SonucBar secenek={data.anket.secenek_a} oy={oyA} {toplamOy} />
       <SonucBar secenek={data.anket.secenek_b} oy={oyB} {toplamOy} />
