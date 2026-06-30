@@ -28,9 +28,9 @@
   </div>
 
   <div class="bg-white rounded-2xl shadow-[0_1px_3px_rgba(60,64,67,0.3),0_4px_8px_rgba(60,64,67,0.15)] overflow-hidden">
-    <SonucBar secenek={data.anket.secenek_a} oy={oyA} {toplamOy} kazanan={aKazandi} />
+    <SonucBar secenek={data.anket.secenek_a} oy={oyA} {toplamOy} taraf="A" />
     <div class="h-px bg-[#e8eaed]"></div>
-    <SonucBar secenek={data.anket.secenek_b} oy={oyB} {toplamOy} kazanan={!aKazandi} />
+    <SonucBar secenek={data.anket.secenek_b} oy={oyB} {toplamOy} taraf="B" />
     <div class="h-px bg-[#e8eaed]"></div>
     <p class="text-[12px] text-[#80868b] px-5 py-3 text-right">{toplamOy.toLocaleString('tr-TR')} toplam oy</p>
   </div>
