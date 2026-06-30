@@ -7,8 +7,8 @@
   <header class="sticky top-0 z-10 backdrop-blur-xl bg-black/70 border-b border-white/[0.08] px-6 py-3">
     <div class="max-w-4xl mx-auto flex justify-between items-center">
       <a href="/" class="flex items-center gap-2.5 group">
-        <span class="flex items-center justify-center w-7 h-7 rounded-lg bg-[#0A84FF] shadow-lg shadow-[#0A84FF]/30">
-          <span class="text-white font-black text-sm leading-none">r</span>
+        <span class="flex items-center justify-center w-7 h-7 rounded bg-[#00D964]">
+          <span class="text-black font-black text-sm leading-none">r</span>
         </span>
         <span class="text-[15px] font-semibold text-white/90 group-hover:text-white transition-colors">referandoom</span>
       </a>

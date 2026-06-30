@@ -20,11 +20,15 @@
     <div class="space-y-3">
       {#each data.anketler as anket (anket.id)}
         {@const toplam = anket.oy_a + anket.oy_b}
-        <div class="rounded-2xl border border-white/10 bg-[#15161a] p-6">
-          <h2 class="font-semibold text-white mb-5">{anket.soru}</h2>
-          <SonucBar secenek={anket.secenek_a} oy={anket.oy_a} toplamOy={toplam} taraf="A" />
-          <SonucBar secenek={anket.secenek_b} oy={anket.oy_b} toplamOy={toplam} taraf="B" />
-          <p class="text-[11px] text-white/25 mt-3 text-right">{toplam.toLocaleString('tr-TR')} toplam oy</p>
+        {@const aKazandi = anket.oy_a >= anket.oy_b}
+        <div class="border border-white/10 rounded-lg overflow-hidden">
+          <h2 class="font-semibold text-white px-5 pt-4 pb-3">{anket.soru}</h2>
+          <div class="h-px bg-white/10"></div>
+          <SonucBar secenek={anket.secenek_a} oy={anket.oy_a} toplamOy={toplam} kazanan={aKazandi} />
+          <div class="h-px bg-white/10"></div>
+          <SonucBar secenek={anket.secenek_b} oy={anket.oy_b} toplamOy={toplam} kazanan={!aKazandi} />
+          <div class="h-px bg-white/10"></div>
+          <p class="text-[11px] text-white/25 px-5 py-2 text-right">{toplam.toLocaleString('tr-TR')} toplam oy</p>
         </div>
       {/each}
     </div>

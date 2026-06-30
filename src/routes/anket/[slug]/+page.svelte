@@ -7,6 +7,7 @@
   let oyA = $state(data.oy_a);
   let oyB = $state(data.oy_b);
   let toplamOy = $derived(oyA + oyB);
+  let aKazandi = $derived(oyA >= oyB);
 </script>
 
 <svelte:head>
@@ -18,17 +19,19 @@
     ← Geçmiş Sonuçlar
   </a>
 
-  <div class="rounded-2xl border border-white/10 bg-[#15161a] p-7">
-    <div class="flex justify-between items-start mb-7">
-      <h1 class="text-2xl font-bold text-white leading-snug">{data.anket.soru}</h1>
-      <span class="text-[11px] px-3 py-1 rounded-full ml-4 shrink-0 font-medium border
-        {data.anket.aktif ? 'bg-[#00C896]/10 text-[#00C896] border-[#00C896]/30' : 'bg-white/[0.04] text-white/30 border-white/10'}">
-        {data.anket.aktif ? 'Aktif' : 'Kapalı'}
-      </span>
-    </div>
+  <div class="mb-4 flex items-start justify-between gap-4">
+    <h1 class="text-2xl font-bold text-white leading-snug">{data.anket.soru}</h1>
+    <span class="text-[11px] px-3 py-1 rounded-full shrink-0 font-medium border
+      {data.anket.aktif ? 'bg-[#00D964]/10 text-[#00D964] border-[#00D964]/30' : 'bg-white/[0.04] text-white/30 border-white/10'}">
+      {data.anket.aktif ? 'Aktif' : 'Kapalı'}
+    </span>
+  </div>
 
-    <SonucBar secenek={data.anket.secenek_a} oy={oyA} {toplamOy} taraf="A" />
-    <SonucBar secenek={data.anket.secenek_b} oy={oyB} {toplamOy} taraf="B" />
-    <p class="text-[11px] text-white/25 mt-4 text-right">{toplamOy.toLocaleString('tr-TR')} toplam oy</p>
+  <div class="border border-white/10 rounded-lg overflow-hidden">
+    <SonucBar secenek={data.anket.secenek_a} oy={oyA} {toplamOy} kazanan={aKazandi} />
+    <div class="h-px bg-white/10"></div>
+    <SonucBar secenek={data.anket.secenek_b} oy={oyB} {toplamOy} kazanan={!aKazandi} />
+    <div class="h-px bg-white/10"></div>
+    <p class="text-[11px] text-white/25 px-5 py-2 text-right">{toplamOy.toLocaleString('tr-TR')} toplam oy</p>
   </div>
 </div>

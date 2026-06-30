@@ -1,8 +1,11 @@
 <script lang="ts">
-  let { anketId, secenekA, secenekB, onOyKaydedildi }: {
+  let { anketId, secenekA, secenekB, oyA, oyB, toplamOy, onOyKaydedildi }: {
     anketId: string;
     secenekA: string;
     secenekB: string;
+    oyA: number;
+    oyB: number;
+    toplamOy: number;
     onOyKaydedildi?: (secim: 'A' | 'B', oylar: { a: number; b: number }) => void;
   } = $props();
 
@@ -10,8 +13,8 @@
   let hata = $state('');
   let yukleniyor = $state(false);
 
-  const RENK_A = '#00C896';
-  const RENK_B = '#FF4B6E';
+  let yuzdeA = $derived(toplamOy === 0 ? 50 : Math.round((oyA / toplamOy) * 100));
+  let yuzdeB = $derived(100 - yuzdeA);
 
   async function oyKullan(secim: 'A' | 'B') {
     if (secilen) return;
@@ -29,36 +32,47 @@
     onOyKaydedildi?.(secim, data.oylar);
   }
 
-  function stil(secim: 'A' | 'B') {
-    const renk = secim === 'A' ? RENK_A : RENK_B;
-    if (!secilen) {
-      return `background: ${renk}1A; color: ${renk}; border: 1px solid ${renk}40;`;
-    }
+  function satirClass(secim: 'A' | 'B') {
     if (secilen === secim) {
-      return `background: ${renk}; color: #08110d; border: 1px solid ${renk};`;
+      return 'bg-[#00D964] text-black';
     }
-    return `background: transparent; color: rgba(255,255,255,0.25); border: 1px solid rgba(255,255,255,0.08);`;
+    if (secilen) {
+      return 'bg-transparent text-white/25';
+    }
+    return 'bg-transparent text-white hover:bg-white/[0.04]';
   }
 </script>
 
 <button
   onclick={() => oyKullan('A')}
   disabled={yukleniyor || !!secilen}
-  class="flex items-center justify-center min-h-14 px-4 py-3 rounded-xl font-bold text-[15px] transition-all duration-200 active:scale-[0.96] disabled:cursor-default {!secilen ? 'hover:brightness-125' : ''} {secilen === 'A' ? 'scale-[1.02]' : ''}"
-  style={stil('A')}
+  class="w-full flex items-center justify-between px-5 py-4 transition-colors duration-200 disabled:cursor-default {satirClass('A')}"
 >
-  {secenekA}
+  <span class="font-semibold text-[16px] flex items-center gap-2">
+    {#if secilen === 'A'}
+      <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M13.5 4.5L6 12l-3.5-3.5" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    {/if}
+    {secenekA}
+  </span>
+  <span class="font-bold tabular-nums text-[16px]">{yuzdeA}%</span>
 </button>
+
+<div class="h-px bg-white/10"></div>
 
 <button
   onclick={() => oyKullan('B')}
   disabled={yukleniyor || !!secilen}
-  class="flex items-center justify-center min-h-14 px-4 py-3 rounded-xl font-bold text-[15px] transition-all duration-200 active:scale-[0.96] disabled:cursor-default {!secilen ? 'hover:brightness-125' : ''} {secilen === 'B' ? 'scale-[1.02]' : ''}"
-  style={stil('B')}
+  class="w-full flex items-center justify-between px-5 py-4 transition-colors duration-200 disabled:cursor-default {satirClass('B')}"
 >
-  {secenekB}
+  <span class="font-semibold text-[16px] flex items-center gap-2">
+    {#if secilen === 'B'}
+      <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M13.5 4.5L6 12l-3.5-3.5" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    {/if}
+    {secenekB}
+  </span>
+  <span class="font-bold tabular-nums text-[16px]">{yuzdeB}%</span>
 </button>
 
 {#if hata}
-  <p class="col-span-2 text-red-400/80 text-[13px] text-center mt-1">{hata}</p>
+  <p class="text-red-400/80 text-[13px] text-center py-2 bg-red-950/20">{hata}</p>
 {/if}
