@@ -19,23 +19,25 @@
   <title>referandoom</title>
 </svelte:head>
 
-<div class="max-w-3xl mx-auto px-6 py-20">
+<div class="min-h-[calc(100vh-57px)] flex flex-col justify-center px-6 py-10 max-w-4xl mx-auto w-full">
   {#if !data.anket}
-    <div class="text-center text-zinc-500 py-20">
+    <div class="text-center text-zinc-500">
       <p class="text-2xl font-medium text-zinc-300 mb-4">Şu an aktif anket bulunmuyor.</p>
       <a href="/sonuclar" class="text-indigo-400 hover:text-indigo-300 transition-colors">
         Geçmiş sonuçlara bak →
       </a>
     </div>
   {:else}
-    <div class="text-center mb-12">
-      <p class="text-xs font-semibold uppercase tracking-widest text-indigo-400 mb-4">Günün Sorusu</p>
-      <h1 class="text-4xl font-bold text-white leading-tight">
+    <!-- Soru -->
+    <div class="text-center mb-10">
+      <p class="text-xs font-semibold uppercase tracking-widest text-indigo-400 mb-3">Günün Sorusu</p>
+      <h1 class="text-3xl sm:text-5xl font-black text-white leading-tight">
         {data.anket.soru}
       </h1>
     </div>
 
-    <div class="grid grid-cols-2 gap-4 mb-12">
+    <!-- Oy butonları -->
+    <div class="grid grid-cols-[1fr_auto_1fr] items-stretch gap-4 mb-8">
       <OyFormu
         anketId={data.anket.id}
         secenekA={data.anket.secenek_a}
@@ -44,10 +46,11 @@
       />
     </div>
 
-    <div class="bg-zinc-900 border border-zinc-800 rounded-2xl p-6">
-      <div class="flex justify-between items-center mb-5">
-        <p class="text-sm font-medium text-zinc-400">Anlık Sonuçlar</p>
-        <p class="text-sm text-zinc-500">{toplamOy} oy</p>
+    <!-- Sonuçlar -->
+    <div class="bg-zinc-900/60 border border-zinc-800 rounded-2xl p-5 backdrop-blur-sm">
+      <div class="flex justify-between items-center mb-4">
+        <p class="text-xs font-semibold uppercase tracking-widest text-zinc-500">Anlık Sonuçlar</p>
+        <p class="text-xs text-zinc-600">{toplamOy.toLocaleString('tr-TR')} oy</p>
       </div>
       <SonucBar secenek={data.anket.secenek_a} oy={oyA} {toplamOy} />
       <SonucBar secenek={data.anket.secenek_b} oy={oyB} {toplamOy} />
