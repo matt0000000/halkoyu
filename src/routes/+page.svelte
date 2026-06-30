@@ -51,16 +51,15 @@
     </div>
 
     <!-- Footer -->
-    <div class="flex justify-between items-center px-1">
-      <span class="text-[12px] text-[#80868b] tabular-nums">{toplamOy.toLocaleString('tr-TR')} oy</span>
-      {#if secilenSecim}
+    {#if secilenSecim}
+      <div class="flex justify-end px-1">
         <span class="text-[12px] font-medium text-[#1e8e3e] flex items-center gap-1">
           <svg width="12" height="12" viewBox="0 0 16 16" fill="none">
             <path d="M13.5 4.5L6 12l-3.5-3.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
           </svg>
           Oyunuz kaydedildi
         </span>
-      {/if}
-    </div>
+      </div>
+    {/if}
   {/if}
 </div>

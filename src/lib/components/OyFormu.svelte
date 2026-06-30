@@ -62,7 +62,7 @@
     {/if}
     <span class="font-medium text-[16px] text-center leading-snug">{secenekA}</span>
     {#if secilen}
-      <span class="font-medium tabular-nums text-[14px] {secilen === 'A' ? 'text-[#1a73e8]' : 'text-[#bdc1c6]'}">{yuzdeA}%</span>
+      <span class="font-medium tabular-nums text-[15px] {secilen === 'A' ? 'text-[#1a73e8]' : 'text-[#bdc1c6]'}">{yuzdeA}%</span>
     {/if}
   </button>
 
