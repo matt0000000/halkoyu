@@ -3,7 +3,10 @@ import type { RequestHandler } from './$types';
 import { supabaseServer } from '$lib/supabase';
 import { emailHash } from '$lib/hash';
 
-export const POST: RequestHandler = async ({ request, getClientAddress }) => {
+const COOKIE_NAME = 'visitor_id';
+const COOKIE_MAX_AGE = 60 * 60 * 24 * 365; // 1 yıl
+
+export const POST: RequestHandler = async ({ request, cookies }) => {
   const body = await request.json().catch(() => null);
   const anketId: string = body?.anketId?.trim() ?? '';
   const secim: string = body?.secim ?? '';
@@ -27,22 +30,36 @@ export const POST: RequestHandler = async ({ request, getClientAddress }) => {
     return json({ error: 'Bu anket kapalı' }, { status: 403 });
   }
 
-  // IP adresini al ve hash'le
-  const ip = request.headers.get('cf-connecting-ip')
-    ?? request.headers.get('x-forwarded-for')?.split(',')[0].trim()
-    ?? getClientAddress();
-  const ipHash = await emailHash(ip, anketId);
+  // Visitor ID cookie'sini al veya yeni oluştur
+  let visitorId = cookies.get(COOKIE_NAME);
+  const isNewVisitor = !visitorId;
+  if (!visitorId) {
+    visitorId = crypto.randomUUID();
+  }
+
+  const visitorHash = await emailHash(visitorId, anketId);
 
   // Oyu kaydet (UNIQUE constraint duplicate'ı engeller)
   const { error: insertError } = await supabaseServer
     .from('oylar')
-    .insert({ anket_id: anketId, email_hash: ipHash, secim });
+    .insert({ anket_id: anketId, email_hash: visitorHash, secim });
 
   if (insertError) {
     if (insertError.code === '23505') {
-      return json({ error: 'Bu anket için bu cihazdan zaten oy kullandınız' }, { status: 409 });
+      return json({ error: 'Bu ankette zaten oy kullandınız' }, { status: 409 });
     }
     return json({ error: 'Oy kaydedilemedi, tekrar deneyin' }, { status: 500 });
+  }
+
+  // Cookie'yi set et
+  if (isNewVisitor) {
+    cookies.set(COOKIE_NAME, visitorId, {
+      path: '/',
+      maxAge: COOKIE_MAX_AGE,
+      httpOnly: true,
+      sameSite: 'lax',
+      secure: true
+    });
   }
 
   // Güncel sonuçları döndür
