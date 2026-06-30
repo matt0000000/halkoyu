@@ -28,7 +28,8 @@ export const POST: RequestHandler = async ({ request, getClientAddress }) => {
   }
 
   // IP adresini al ve hash'le
-  const ip = request.headers.get('x-forwarded-for')?.split(',')[0].trim()
+  const ip = request.headers.get('cf-connecting-ip')
+    ?? request.headers.get('x-forwarded-for')?.split(',')[0].trim()
     ?? getClientAddress();
   const ipHash = await emailHash(ip, anketId);
 
