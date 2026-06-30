@@ -1,9 +1,8 @@
 @import 'tailwindcss';
 
 @theme {
-  --color-brand: #1a73e8;
-  --color-brand-dark: #1557b0;
-  --font-sans: 'Google Sans', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  --color-brand: #00C805;
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
 }
 
 * {
