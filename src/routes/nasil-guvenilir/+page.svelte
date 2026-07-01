@@ -63,7 +63,7 @@
   <!-- Honest limitation -->
   <div style="padding: 16px 20px; background: oklch(0.16 0.012 265); border-radius: 10px; margin-bottom: 32px;">
     <p style="margin: 0; font-size: 13px; color: oklch(0.6 0.01 260); line-height: 1.6;">
-      <strong style="color: oklch(0.8 0.01 260);">Dürüst olalım:</strong> Bu sistem, bir oyun sessizce değiştirilmesini ve doğrudan veritabanına sahte oy eklenmesini pratikte imkansız hale getirir. Ama mutlak bir garanti değil — imzalama anahtarını üreten ve saklayan taraf olduğumuz için, bilinçli olarak o anahtarı çalıp sahte imza üretmemiz teorik olarak mümkün. Bu, "tek bir SQL sorgusuyla saniyeler içinde" değil, kasıtlı ve iz bırakan bir sahtecilik girişimi gerektirir. Oy kullanma sırasında kişi başı tek oy kısıtlamasını da ayrıca (çerez tabanlı) uyguluyoruz.
+      <strong style="color: oklch(0.8 0.01 260);">Dürüst olalım:</strong> Bu sistem, bir oyun sessizce değiştirilmesini ve doğrudan veritabanına sahte oy eklenmesini pratikte imkansız hale getirir. Ama mutlak bir garanti değil — imzalama anahtarını üreten ve saklayan taraf olduğumuz için, bilinçli olarak o anahtarı çalıp sahte imza üretmemiz teorik olarak mümkün. Bu, "tek bir SQL sorgusuyla saniyeler içinde" değil, kasıtlı ve iz bırakan bir sahtecilik girişimi gerektirir. Oy kullanma sırasında kişi başı tek oy kısıtlamasını da ayrıca (IP adresi tabanlı) uyguluyoruz — bu, aynı ev/ofis/mobil ağı paylaşan farklı kişilerin bazen tek oy hakkına düşmesi anlamına gelebilir.
     </p>
   </div>
 

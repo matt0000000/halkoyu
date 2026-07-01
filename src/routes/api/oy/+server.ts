@@ -5,10 +5,7 @@ import { emailHash } from '$lib/hash';
 import { imzala } from '$lib/imza';
 import { CHAIN_PRIVATE_KEY } from '$env/static/private';
 
-const COOKIE_NAME = 'visitor_id';
-const COOKIE_MAX_AGE = 60 * 60 * 24 * 365; // 1 yıl
-
-export const POST: RequestHandler = async ({ request, cookies }) => {
+export const POST: RequestHandler = async ({ request, getClientAddress }) => {
   const body = await request.json().catch(() => null);
   const anketId: string = body?.anketId?.trim() ?? '';
   const secim: string = body?.secim ?? '';
@@ -32,14 +29,8 @@ export const POST: RequestHandler = async ({ request, cookies }) => {
     return json({ error: 'Bu anket kapalı' }, { status: 403 });
   }
 
-  // Visitor ID cookie'sini al veya yeni oluştur
-  let visitorId = cookies.get(COOKIE_NAME);
-  const isNewVisitor = !visitorId;
-  if (!visitorId) {
-    visitorId = crypto.randomUUID();
-  }
-
-  const visitorHash = await emailHash(visitorId, anketId);
+  const ip = getClientAddress();
+  const visitorHash = await emailHash(ip, anketId);
 
   // Oyu kaydet (UNIQUE constraint duplicate'ı engeller)
   const { data: yeniOy, error: insertError } = await supabaseServer
@@ -74,17 +65,6 @@ export const POST: RequestHandler = async ({ request, cookies }) => {
     await supabaseServer.from('oylar').update({ imza }).eq('id', yeniOy.id);
   } catch (e) {
     console.error('imzalama basarisiz:', e);
-  }
-
-  // Cookie'yi set et
-  if (isNewVisitor) {
-    cookies.set(COOKIE_NAME, visitorId, {
-      path: '/',
-      maxAge: COOKIE_MAX_AGE,
-      httpOnly: true,
-      sameSite: 'lax',
-      secure: true
-    });
   }
 
   // Güncel sonuçları döndür
