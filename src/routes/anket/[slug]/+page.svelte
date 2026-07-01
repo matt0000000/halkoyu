@@ -43,6 +43,7 @@
   </div>
 
   <div style="margin-top: 24px; padding-top: 20px; border-top: 1px solid oklch(0.28 0.02 265); font-family: 'JetBrains Mono', monospace; font-size: 12px; color: oklch(0.6 0.01 260);">
-    {formatN(toplamOy)} total votes
+    {formatN(toplamOy)} total votes ·
+    <a href="/dogrulama/{data.anket.slug}" style="color: oklch(0.82 0.17 145); text-decoration: underline;">zinciri doğrula</a>
   </div>
 </div>

@@ -54,6 +54,7 @@
             <div style="height: 100%; background: oklch(0.82 0.17 145); border-radius: 999px; width: {pct}%;"></div>
           </div>
           <div style="margin-top: 5px; font-family: 'JetBrains Mono', monospace; font-size: 10px; color: oklch(0.55 0.01 260);">{formatN(toplam)} votes</div>
+          <a href="/dogrulama/{anket.slug}" style="display: inline-block; margin-top: 6px; font-family: 'JetBrains Mono', monospace; font-size: 10px; color: oklch(0.55 0.02 265); text-decoration: underline;">zinciri doğrula →</a>
         </div>
       </div>
     {/each}

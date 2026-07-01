@@ -1,0 +1,13 @@
+{
+  "name": "referandoom-anchor",
+  "private": true,
+  "type": "module",
+  "description": "Periyodik olarak oy zincirinin son hash'ini OpenTimestamps ile Bitcoin blockchain'ine damgalar. Bilerek ana SvelteKit uygulamasindan ayri tutulur -- Cloudflare Workers runtime'inda calismaz, sadece GitHub Actions'daki duz Node ortaminda calisir.",
+  "scripts": {
+    "anchor": "node anchor.mjs"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.108.2",
+    "opentimestamps": "^0.4.9"
+  }
+}

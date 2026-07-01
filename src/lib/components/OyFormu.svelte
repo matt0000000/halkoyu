@@ -1,8 +1,9 @@
 <script lang="ts">
   const LIME = 'oklch(0.82 0.17 145)';
 
-  let { anketId, secenekA, secenekB, oyA, oyB, toplamOy, countdown, oncekiSecim = null, onOyKaydedildi }: {
+  let { anketId, anketSlug, secenekA, secenekB, oyA, oyB, toplamOy, countdown, oncekiSecim = null, onOyKaydedildi }: {
     anketId: string;
+    anketSlug: string;
     secenekA: string;
     secenekB: string;
     oyA: number;
@@ -34,8 +35,9 @@
     if (!res.ok) {
       if (res.status === 409 && data.oylar) {
         // Daha önce oy kullanmış — sonuç ekranını göster
-        secilen = data.oncekiSecim ?? secim;
-        onOyKaydedildi?.(secilen, data.oylar);
+        const finalSecim: 'A' | 'B' = data.oncekiSecim ?? secim;
+        secilen = finalSecim;
+        onOyKaydedildi?.(finalSecim, data.oylar);
       } else {
         hata = data.error;
       }
@@ -105,6 +107,7 @@
     <div style="font-family: 'JetBrains Mono', monospace; font-size: 12px; color: oklch(0.6 0.01 260);">
       {formatN(toplamOy)} total votes ·
       <button onclick={() => { secilen = null; hata = ''; }} style="background: none; border: none; padding: 0; cursor: pointer; font-family: 'JetBrains Mono', monospace; font-size: 12px; color: {LIME}; text-decoration: underline;">vote again</button>
+      · <a href="/dogrulama/{anketSlug}" style="color: {LIME}; text-decoration: underline;">zinciri doğrula</a>
     </div>
     <div style="text-align: right; flex-shrink: 0; margin-left: 16px;">
       <div style="font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: oklch(0.6 0.01 260); margin-bottom: 3px;">Next referendum in</div>

@@ -68,6 +68,7 @@
 
     <OyFormu
       anketId={data.anket.id}
+      anketSlug={data.anket.slug}
       secenekA={data.anket.secenek_a}
       secenekB={data.anket.secenek_b}
       {oyA}
