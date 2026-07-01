@@ -1,4 +1,6 @@
 <script lang="ts">
+  const LIME = '#b6e84a';
+
   let { anketId, secenekA, secenekB, oyA, oyB, toplamOy, onOyKaydedildi }: {
     anketId: string;
     secenekA: string;
@@ -13,14 +15,11 @@
   let hata = $state('');
   let yukleniyor = $state(false);
 
-  const YESIL = '#00C805';
-  const KIRMIZI = '#FF4B4B';
-
   let yuzdeA = $derived(toplamOy === 0 ? 50 : Math.round((oyA / toplamOy) * 100));
   let yuzdeB = $derived(100 - yuzdeA);
 
   async function oyKullan(secim: 'A' | 'B') {
-    if (secilen) return;
+    if (secilen || yukleniyor) return;
     hata = '';
     yukleniyor = true;
     const res = await fetch('/api/oy', {
@@ -34,55 +33,63 @@
     secilen = secim;
     onOyKaydedildi?.(secim, data.oylar);
   }
-
-  function renk(secim: 'A' | 'B') {
-    return secim === 'A' ? YESIL : KIRMIZI;
-  }
 </script>
 
-<div class="grid grid-cols-2 divide-x divide-[#2d2f45]">
+<div class="space-y-2">
   {#each (['A', 'B'] as const) as secim}
     {@const isA = secim === 'A'}
     {@const secenek = isA ? secenekA : secenekB}
     {@const yuzde = isA ? yuzdeA : yuzdeB}
-    {@const r = renk(secim)}
     {@const secildi = secilen === secim}
-    {@const diger = !!secilen && !secildi}
+    {@const oylandiMi = secilen !== null}
 
     <button
       onclick={() => oyKullan(secim)}
-      disabled={yukleniyor || !!secilen}
-      class="flex flex-col items-center justify-center gap-3 px-5 py-7 transition-all duration-200 disabled:cursor-default"
-      style="background: {secildi ? r + '18' : 'transparent'};"
-      onmouseenter={e => { if (!secilen) (e.currentTarget as HTMLElement).style.background = r + '0d'; }}
-      onmouseleave={e => { if (!secilen) (e.currentTarget as HTMLElement).style.background = 'transparent'; }}
+      disabled={yukleniyor || oylandiMi}
+      class="relative w-full rounded-xl overflow-hidden text-left transition-all duration-200 disabled:cursor-default"
+      style="height: 68px; background: #2a2a34;"
     >
-      {#if secildi}
-        <svg width="22" height="22" viewBox="0 0 20 20" fill="none" class="shrink-0">
-          <circle cx="10" cy="10" r="9" fill={r} stroke={r} stroke-width="2"/>
-          <path d="M6 10.5l3 3 5-6" stroke="black" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-      {:else}
-        <span class="w-[22px] h-[22px] rounded-full border-2 shrink-0 transition-colors"
-          style="border-color: {diger ? '#2d2f45' : r + '60'};"></span>
+      {#if oylandiMi}
+        <!-- Lime fill bar -->
+        <div
+          class="absolute inset-y-0 left-0 rounded-xl transition-all duration-700"
+          style="width: {yuzde}%; background: {LIME}; opacity: {secildi ? 1 : 0.22};"
+        ></div>
       {/if}
 
-      <span class="font-semibold text-[16px] text-center leading-snug transition-colors"
-        style="color: {secildi ? r : diger ? '#3d3f55' : 'white'};">
-        {secenek}
-      </span>
+      <!-- Content -->
+      <div class="relative flex items-center justify-between px-5 h-full">
+        <div class="flex items-center gap-3">
+          {#if oylandiMi}
+            {#if secildi}
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none" class="shrink-0">
+                <circle cx="10" cy="10" r="9" fill="#18181f"/>
+                <path d="M6 10.5l3 3 5-6" stroke={LIME} stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            {:else}
+              <span class="w-5 h-5 rounded-full shrink-0" style="border: 2px solid #3a3a48;"></span>
+            {/if}
+          {:else}
+            <span class="w-5 h-5 rounded-full shrink-0" style="border: 2px solid {LIME}44;"></span>
+          {/if}
 
-      {#if secilen}
-        <span class="font-bold tabular-nums text-[16px]"
-          style="color: {secildi ? r : '#3d3f55'};">
-          {yuzde}%
-        </span>
-      {/if}
+          <span class="font-semibold text-[15px]" style="color: {oylandiMi && !secildi ? '#4a4a5a' : 'white'};">
+            {secenek}
+          </span>
+        </div>
+
+        {#if oylandiMi}
+          <span class="font-bold tabular-nums text-[16px]" style="color: {secildi ? '#18181f' : '#4a4a5a'};">
+            {yuzde}%
+          </span>
+        {:else if yukleniyor}
+          <span class="text-[12px]" style="color: #4a4a5a;">...</span>
+        {/if}
+      </div>
     </button>
   {/each}
 </div>
 
 {#if hata}
-  <div class="h-px bg-[#2d2f45]"></div>
-  <p class="text-[#FF4B4B] text-[13px] text-center py-3 px-5">{hata}</p>
+  <p class="text-[13px] text-center pt-2" style="color: #e84a4a;">{hata}</p>
 {/if}

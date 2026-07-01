@@ -9,23 +9,23 @@
   <title>Geçmiş Sonuçlar — referandoom</title>
 </svelte:head>
 
-<div class="max-w-2xl mx-auto px-5 py-12">
+<div class="max-w-xl mx-auto px-5 py-12">
   <h1 class="text-[22px] font-semibold text-white mb-7">Geçmiş Anket Sonuçları</h1>
 
   {#if data.anketler.length === 0}
-    <div class="text-center py-20 text-[#9b9bb4]">
+    <div class="text-center py-20" style="color: #666680;">
       <p>Henüz tamamlanmış anket bulunmuyor.</p>
     </div>
   {:else}
-    <div class="space-y-3">
+    <div class="space-y-4">
       {#each data.anketler as anket (anket.id)}
         {@const toplam = anket.oy_a + anket.oy_b}
-        <div class="bg-[#1e1f2e] border border-[#2d2f45] rounded-xl overflow-hidden">
-          <h2 class="font-semibold text-[15px] text-white px-5 pt-4 pb-3">{anket.soru}</h2>
-          <div class="h-px bg-[#2d2f45]"></div>
-          <SonucBar secenek={anket.secenek_a} oy={anket.oy_a} toplamOy={toplam} taraf="A" />
-          <div class="h-px bg-[#2d2f45]"></div>
-          <SonucBar secenek={anket.secenek_b} oy={anket.oy_b} toplamOy={toplam} taraf="B" />
+        <div class="rounded-2xl p-5 space-y-3" style="background: #2a2a34;">
+          <h2 class="font-semibold text-[15px] text-white">{anket.soru}</h2>
+          <div class="space-y-2">
+            <SonucBar secenek={anket.secenek_a} oy={anket.oy_a} toplamOy={toplam} />
+            <SonucBar secenek={anket.secenek_b} oy={anket.oy_b} toplamOy={toplam} />
+          </div>
         </div>
       {/each}
     </div>

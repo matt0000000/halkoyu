@@ -13,22 +13,23 @@
   <title>{data.anket.soru} — referandoom</title>
 </svelte:head>
 
-<div class="max-w-2xl mx-auto px-5 py-12">
-  <a href="/sonuclar" class="text-[13px] text-[#9b9bb4] hover:text-white transition-colors mb-7 inline-block">
+<div class="max-w-xl mx-auto px-5 py-12">
+  <a href="/sonuclar" class="text-[13px] transition-colors mb-7 inline-block" style="color: #666680;">
     ← Geçmiş Sonuçlar
   </a>
 
   <div class="flex items-start justify-between gap-4 mb-5">
     <h1 class="text-[22px] font-semibold text-white leading-snug">{data.anket.soru}</h1>
-    <span class="text-[11px] px-2.5 py-1 rounded font-medium shrink-0 border
-      {data.anket.aktif ? 'text-[#00C805] border-[#00C805]/30 bg-[#00C805]/10' : 'text-[#9b9bb4] border-[#2d2f45] bg-[#2d2f45]/50'}">
+    <span class="text-[11px] px-2.5 py-1 rounded font-medium shrink-0 border"
+      style="{data.anket.aktif
+        ? 'color: #b6e84a; border-color: #b6e84a33; background: #b6e84a11;'
+        : 'color: #666680; border-color: #2a2a34; background: #2a2a3499;'}">
       {data.anket.aktif ? 'Aktif' : 'Kapalı'}
     </span>
   </div>
 
-  <div class="bg-[#1e1f2e] border border-[#2d2f45] rounded-xl overflow-hidden">
-    <SonucBar secenek={data.anket.secenek_a} oy={oyA} {toplamOy} taraf="A" />
-    <div class="h-px bg-[#2d2f45]"></div>
-    <SonucBar secenek={data.anket.secenek_b} oy={oyB} {toplamOy} taraf="B" />
+  <div class="rounded-2xl p-5 space-y-2" style="background: #2a2a34;">
+    <SonucBar secenek={data.anket.secenek_a} oy={oyA} {toplamOy} />
+    <SonucBar secenek={data.anket.secenek_b} oy={oyB} {toplamOy} />
   </div>
 </div>

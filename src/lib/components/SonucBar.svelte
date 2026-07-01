@@ -1,21 +1,22 @@
 <script lang="ts">
-  let { secenek, oy, toplamOy, taraf = 'A' }: {
+  const LIME = '#b6e84a';
+
+  let { secenek, oy, toplamOy }: {
     secenek: string;
     oy: number;
     toplamOy: number;
-    taraf?: 'A' | 'B';
   } = $props();
 
   let yuzde = $derived(toplamOy === 0 ? 0 : Math.round((oy / toplamOy) * 100));
-  let renk = $derived(taraf === 'A' ? '#00C805' : '#FF4B4B');
 </script>
 
-<div class="px-5 py-4" style="background: {renk}12;">
-  <div class="flex justify-between items-center mb-2">
-    <span class="font-semibold text-[14px]" style="color: {renk};">{secenek}</span>
-    <span class="font-bold tabular-nums text-[14px]" style="color: {renk};">{yuzde}%</span>
-  </div>
-  <div class="w-full rounded-full h-1" style="background: #2d2f45;">
-    <div class="h-1 rounded-full transition-all duration-700" style="width: {yuzde}%; background: {renk};"></div>
+<div class="relative rounded-xl overflow-hidden" style="height: 60px; background: #2a2a34;">
+  <div
+    class="absolute inset-y-0 left-0 rounded-xl transition-all duration-700"
+    style="width: {yuzde}%; background: {LIME}; opacity: 0.3;"
+  ></div>
+  <div class="relative flex items-center justify-between px-5 h-full">
+    <span class="font-semibold text-[14px] text-white">{secenek}</span>
+    <span class="font-bold tabular-nums text-[14px]" style="color: {LIME};">{yuzde}%</span>
   </div>
 </div>
