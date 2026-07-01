@@ -1,7 +1,7 @@
 <script lang="ts">
   const LIME = 'oklch(0.82 0.17 145)';
 
-  let { anketId, secenekA, secenekB, oyA, oyB, toplamOy, countdown, onOyKaydedildi }: {
+  let { anketId, secenekA, secenekB, oyA, oyB, toplamOy, countdown, oncekiSecim = null, onOyKaydedildi }: {
     anketId: string;
     secenekA: string;
     secenekB: string;
@@ -9,10 +9,11 @@
     oyB: number;
     toplamOy: number;
     countdown: string;
+    oncekiSecim?: 'A' | 'B' | null;
     onOyKaydedildi?: (secim: 'A' | 'B', oylar: { a: number; b: number }) => void;
   } = $props();
 
-  let secilen = $state<'A' | 'B' | null>(null);
+  let secilen = $state<'A' | 'B' | null>(oncekiSecim);
   let hata = $state('');
   let yukleniyor = $state(false);
 
@@ -30,7 +31,16 @@
     });
     const data = await res.json();
     yukleniyor = false;
-    if (!res.ok) { hata = data.error; return; }
+    if (!res.ok) {
+      if (res.status === 409 && data.oylar) {
+        // Daha önce oy kullanmış — sonuç ekranını göster
+        secilen = data.oncekiSecim ?? secim;
+        onOyKaydedildi?.(secilen, data.oylar);
+      } else {
+        hata = data.error;
+      }
+      return;
+    }
     secilen = secim;
     onOyKaydedildi?.(secim, data.oylar);
   }

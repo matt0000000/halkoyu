@@ -74,6 +74,7 @@
       {oyB}
       {toplamOy}
       {countdown}
+      oncekiSecim={data.oncekiSecim}
       onOyKaydedildi={oyKaydedildi}
     />
   {/if}

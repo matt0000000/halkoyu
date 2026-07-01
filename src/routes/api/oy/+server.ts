@@ -46,7 +46,19 @@ export const POST: RequestHandler = async ({ request, cookies }) => {
 
   if (insertError) {
     if (insertError.code === '23505') {
-      return json({ error: 'Bu ankette zaten oy kullandınız' }, { status: 409 });
+      // Önceki seçimi ve güncel sayıları döndür
+      const [{ data: mevcutOy }, [{ count: oyA }, { count: oyB }]] = await Promise.all([
+        supabaseServer.from('oylar').select('secim').eq('anket_id', anketId).eq('email_hash', visitorHash).single(),
+        Promise.all([
+          supabaseServer.from('oylar').select('*', { count: 'exact', head: true }).eq('anket_id', anketId).eq('secim', 'A'),
+          supabaseServer.from('oylar').select('*', { count: 'exact', head: true }).eq('anket_id', anketId).eq('secim', 'B')
+        ])
+      ]);
+      return json({
+        error: 'Bu ankette zaten oy kullandınız',
+        oncekiSecim: mevcutOy?.secim ?? null,
+        oylar: { a: oyA ?? 0, b: oyB ?? 0 }
+      }, { status: 409 });
     }
     return json({ error: 'Oy kaydedilemedi, tekrar deneyin' }, { status: 500 });
   }
