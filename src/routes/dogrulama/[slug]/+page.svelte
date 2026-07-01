@@ -1,19 +1,25 @@
 <script lang="ts">
   import { onMount } from 'svelte';
   import type { PageData } from './$types';
-  import { zinciriDogrula, type ZincirDogrulamaSonucu } from '$lib/zincir';
+  import { zinciriDogrula, imzalariDogrula, type ZincirDogrulamaSonucu, type ImzaDogrulamaSonucu } from '$lib/zincir';
 
   let { data }: { data: PageData } = $props();
 
   const LIME = 'oklch(0.82 0.17 145)';
   const KIRMIZI = 'oklch(0.6 0.2 25)';
+  const SARI = 'oklch(0.75 0.15 80)';
 
   let durum = $state<'kontrol-ediliyor' | 'gecerli' | 'gecersiz'>('kontrol-ediliyor');
   let sonuc = $state<ZincirDogrulamaSonucu | null>(null);
+  let imzaSonuc = $state<ImzaDogrulamaSonucu | null>(null);
 
   onMount(async () => {
-    const r = await zinciriDogrula(data.anket.id, data.zincir.oylar);
+    const [r, i] = await Promise.all([
+      zinciriDogrula(data.anket.id, data.zincir.oylar),
+      imzalariDogrula(data.zincir.oylar, data.zincir.acik_anahtar)
+    ]);
     sonuc = r;
+    imzaSonuc = i;
     durum = r.gecerli ? 'gecerli' : 'gecersiz';
   });
 
@@ -71,6 +77,26 @@
       <p style="margin: 0; font-family: 'JetBrains Mono', monospace; font-size: 12px; color: oklch(0.6 0.01 260);">Kayıt #{sonuc?.hataIndex} zincirdeki beklenen hash ile eşleşmiyor. Bu, o kayıttan sonraki verinin değiştirilmiş olabileceği anlamına gelir.</p>
     {/if}
   </div>
+
+  <!-- Signature verification -->
+  {#if imzaSonuc}
+    {@const supheli = imzaSonuc.gecersizImzaSayisi > 0}
+    <div style="padding: 22px 24px; border-radius: 12px; margin-bottom: 28px; background: oklch(0.22 0.015 265); border: 1.5px solid {supheli ? KIRMIZI : LIME};">
+      {#if supheli}
+        <p style="margin: 0 0 4px; font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 17px; color: {KIRMIZI};">⚠ {imzaSonuc.gecersizImzaSayisi} kayıtta geçersiz imza tespit edildi</p>
+        <p style="margin: 0; font-family: 'JetBrains Mono', monospace; font-size: 12px; color: oklch(0.6 0.01 260);">Bu kayıtlar, uygulamanın gerçek imzalama anahtarı olmadan eklenmiş olabilir — yani doğrudan veritabanına yazılmış sahte oy olma ihtimali yüksek.</p>
+      {:else if data.zincir.acik_anahtar}
+        <p style="margin: 0 0 4px; font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 17px; color: {LIME};">✓ Tüm imzalar geçerli</p>
+        <p style="margin: 0; font-family: 'JetBrains Mono', monospace; font-size: 12px; color: oklch(0.6 0.01 260);">
+          {imzaSonuc.imzaliSayisi} kayıt, uygulamanın özel anahtarıyla imzalanmış ve açık anahtarla doğrulandı.
+          {#if imzaSonuc.imzasizSayisi > 0}{imzaSonuc.imzasizSayisi} kayıt imzalama özelliğinden önce oluşturulmuş, imzasız.{/if}
+          Bu imza veritabanına doğrudan erişimi olan biri tarafından üretilemez — sadece gerçek oy verme akışından geçen kayıtlarda bulunur.
+        </p>
+      {:else}
+        <p style="margin: 0; font-family: 'JetBrains Mono', monospace; font-size: 12px; color: {SARI};">Açık anahtar henüz yayınlanmamış — imza doğrulaması yapılamıyor.</p>
+      {/if}
+    </div>
+  {/if}
 
   <!-- Bitcoin anchors -->
   <h3 style="font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 16px; margin: 0 0 12px; color: oklch(0.9 0.005 260);">Bitcoin Zaman Damgaları</h3>

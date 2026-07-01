@@ -28,8 +28,11 @@
     <p style="margin: 0 0 14px; font-size: 14px; color: oklch(0.65 0.01 260); line-height: 1.7;">
       Her oy, kendisinden önce verilmiş oyun bir "izini" taşıyacak şekilde kaydediliyor — tıpkı bir zincirin halkaları gibi. Bir halkayı sonradan değiştirmeye çalışırsan, ona bağlı bütün halkalar da bozulur. Yani geçmişte bir oyu değiştirmek, zincirin geri kalanını da matematiksel olarak tutarsız hale getirir — bu her zaman tespit edilebilir.
     </p>
-    <p style="margin: 0; font-size: 14px; color: oklch(0.65 0.01 260); line-height: 1.7;">
+    <p style="margin: 0 0 14px; font-size: 14px; color: oklch(0.65 0.01 260); line-height: 1.7;">
       Ama tek başına bu yeterli değil — çünkü "zincir bende duruyor, ben de bozulmadığını söylüyorum" demek yine bize güvenmeni gerektirir. Bunun için zincirin belirli anlardaki durumunu, bizim kontrolümüzde olmayan, herkese açık bir sisteme kaydediyoruz: <strong style="color: {LIME};">Bitcoin ağı</strong>. Bu ağ üzerinden "bu zincir şu tarihte, tam olarak bu haliyle var olmuş" diye bağımsız bir kanıt oluşuyor — bunu biz üretmiyoruz, dünya çapında binlerce bağımsız bilgisayar üretiyor.
+    </p>
+    <p style="margin: 0; font-size: 14px; color: oklch(0.65 0.01 260); line-height: 1.7;">
+      Ayrıca her oy, sadece uygulamanın kendisinde bulunan <strong style="color: {LIME};">gizli bir anahtarla imzalanıyor</strong> — bu anahtar veritabanında hiç durmuyor. Yani veritabanına doğrudan erişimi olan biri (biz dahil) yeni bir sahte oy eklese bile, o satırın geçerli bir imzası olmaz — bu da herkes tarafından anında fark edilebilir. Bu, "geçmişi değiştiremem" garantisine ek olarak "yeni sahte oy da ekleyemem" garantisini getiriyor.
     </p>
   </div>
 
@@ -44,7 +47,7 @@
   <!-- Honest limitation -->
   <div style="padding: 16px 20px; background: oklch(0.16 0.012 265); border-radius: 10px; margin-bottom: 32px;">
     <p style="margin: 0; font-size: 13px; color: oklch(0.6 0.01 260); line-height: 1.6;">
-      <strong style="color: oklch(0.8 0.01 260);">Dürüst olalım:</strong> Bu sistem, bir oy kaydedildikten sonra sessizce değiştirilemeyeceğini garanti eder. Oy kullanma sırasında kişi başı tek oy kısıtlamasını da ayrıca (çerez tabanlı) uyguluyoruz — bu iki önlem birlikte sonuçların hem doğru sayıldığını hem de sonradan bozulamayacağını sağlıyor.
+      <strong style="color: oklch(0.8 0.01 260);">Dürüst olalım:</strong> Bu sistem, bir oyun sessizce değiştirilmesini ve doğrudan veritabanına sahte oy eklenmesini pratikte imkansız hale getirir. Ama mutlak bir garanti değil — imzalama anahtarını üreten ve saklayan taraf olduğumuz için, bilinçli olarak o anahtarı çalıp sahte imza üretmemiz teorik olarak mümkün. Bu, "tek bir SQL sorgusuyla saniyeler içinde" değil, kasıtlı ve iz bırakan bir sahtecilik girişimi gerektirir. Oy kullanma sırasında kişi başı tek oy kısıtlamasını da ayrıca (çerez tabanlı) uyguluyoruz.
     </p>
   </div>
 

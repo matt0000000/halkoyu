@@ -1,3 +1,5 @@
+import { importAcikAnahtar, imzaDogrula } from './imza';
+
 async function sha256Hex(input: string): Promise<string> {
   const encoded = new TextEncoder().encode(input);
   const hashBuffer = await crypto.subtle.digest('SHA-256', encoded);
@@ -28,6 +30,7 @@ export interface ZincirOyu {
   email_hash: string;
   created_at_ms: number;
   chain_hash: string;
+  imza: string | null;
 }
 
 export interface ZincirDogrulamaSonucu {
@@ -58,4 +61,54 @@ export async function zinciriDogrula(anketId: string, oylar: ZincirOyu[]): Promi
     onceki = hesaplanan;
   }
   return { gecerli: true, hataIndex: null, sonHash: onceki };
+}
+
+export interface ImzaDogrulamaSonucu {
+  imzaliSayisi: number;
+  imzasizSayisi: number;
+  gecersizImzaSayisi: number;
+  gecersizImzaIndexleri: number[];
+}
+
+/**
+ * Her oyun imzasini (varsa) acik anahtarla dogrular. imza=null olan satirlar
+ * "imzasiz" sayilir (imzalama ozelligi eklenmeden once kaydedilmis olabilir).
+ * imza var ama dogrulanamayan satirlar "gecersiz" sayilir -- bu, dogrudan
+ * veritabanina yazilmis (uygulamadan gecmemis) sahte bir satir oldugunun
+ * guclu bir isaretidir, cunku ozel anahtar veritabaninda hic bulunmaz.
+ */
+export async function imzalariDogrula(
+  oylar: ZincirOyu[],
+  acikAnahtarBase64: string | null
+): Promise<ImzaDogrulamaSonucu> {
+  const sonuc: ImzaDogrulamaSonucu = {
+    imzaliSayisi: 0,
+    imzasizSayisi: 0,
+    gecersizImzaSayisi: 0,
+    gecersizImzaIndexleri: []
+  };
+
+  if (!acikAnahtarBase64) {
+    sonuc.imzasizSayisi = oylar.length;
+    return sonuc;
+  }
+
+  const acikAnahtar = await importAcikAnahtar(acikAnahtarBase64);
+
+  for (let i = 0; i < oylar.length; i++) {
+    const o = oylar[i];
+    if (!o.imza) {
+      sonuc.imzasizSayisi++;
+      continue;
+    }
+    const gecerli = await imzaDogrula(acikAnahtar, o.chain_hash, o.imza);
+    if (gecerli) {
+      sonuc.imzaliSayisi++;
+    } else {
+      sonuc.gecersizImzaSayisi++;
+      sonuc.gecersizImzaIndexleri.push(i);
+    }
+  }
+
+  return sonuc;
 }

@@ -1,6 +1,7 @@
 import { error, json } from '@sveltejs/kit';
 import type { RequestHandler } from './$types';
 import { supabaseServer } from '$lib/supabase';
+import { env } from '$env/dynamic/public';
 
 export const GET: RequestHandler = async ({ params }) => {
   const { data: anket } = await supabaseServer
@@ -13,7 +14,7 @@ export const GET: RequestHandler = async ({ params }) => {
 
   const { data: oylar } = await supabaseServer
     .from('oylar')
-    .select('id, secim, email_hash, created_at, chain_hash')
+    .select('id, secim, email_hash, created_at, chain_hash, imza')
     .eq('anket_id', anket.id)
     .order('created_at', { ascending: true })
     .order('id', { ascending: true });
@@ -31,8 +32,10 @@ export const GET: RequestHandler = async ({ params }) => {
       secim: o.secim,
       email_hash: o.email_hash,
       created_at_ms: new Date(o.created_at).getTime(),
-      chain_hash: o.chain_hash
+      chain_hash: o.chain_hash,
+      imza: o.imza
     })),
-    zaman_damgalari: damgalar ?? []
+    zaman_damgalari: damgalar ?? [],
+    acik_anahtar: env.PUBLIC_CHAIN_PUBLIC_KEY ?? null
   });
 };

@@ -2,6 +2,8 @@ import { json } from '@sveltejs/kit';
 import type { RequestHandler } from './$types';
 import { supabaseServer } from '$lib/supabase';
 import { emailHash } from '$lib/hash';
+import { imzala } from '$lib/imza';
+import { CHAIN_PRIVATE_KEY } from '$env/static/private';
 
 const COOKIE_NAME = 'visitor_id';
 const COOKIE_MAX_AGE = 60 * 60 * 24 * 365; // 1 yıl
@@ -40,9 +42,11 @@ export const POST: RequestHandler = async ({ request, cookies }) => {
   const visitorHash = await emailHash(visitorId, anketId);
 
   // Oyu kaydet (UNIQUE constraint duplicate'ı engeller)
-  const { error: insertError } = await supabaseServer
+  const { data: yeniOy, error: insertError } = await supabaseServer
     .from('oylar')
-    .insert({ anket_id: anketId, email_hash: visitorHash, secim });
+    .insert({ anket_id: anketId, email_hash: visitorHash, secim })
+    .select('id, chain_hash')
+    .single();
 
   if (insertError) {
     if (insertError.code === '23505') {
@@ -61,6 +65,15 @@ export const POST: RequestHandler = async ({ request, cookies }) => {
       }, { status: 409 });
     }
     return json({ error: 'Oy kaydedilemedi, tekrar deneyin' }, { status: 500 });
+  }
+
+  // Oyu ozel anahtarla imzala -- bu imzayi sadece bu sunucu uretebilir,
+  // veritabanina dogrudan erisimi olan biri (service key/SQL Editor) uretemez.
+  try {
+    const imza = await imzala(CHAIN_PRIVATE_KEY, yeniOy.chain_hash);
+    await supabaseServer.from('oylar').update({ imza }).eq('id', yeniOy.id);
+  } catch (e) {
+    console.error('imzalama basarisiz:', e);
   }
 
   // Cookie'yi set et
