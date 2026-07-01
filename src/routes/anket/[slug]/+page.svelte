@@ -23,7 +23,7 @@
 </svelte:head>
 
 <div style="padding-top: 28px;">
-  <a href="/sonuclar" style="display: inline-block; margin-bottom: 24px; font-family: 'JetBrains Mono', monospace; font-size: 12px; letter-spacing: 0.06em; color: oklch(0.6 0.01 260); text-decoration: none;">← Archive</a>
+  <a href="/sonuclar" style="display: inline-block; margin-bottom: 24px; font-family: 'JetBrains Mono', monospace; font-size: 12px; letter-spacing: 0.06em; color: oklch(0.6 0.01 260); text-decoration: none;">← Arşiv</a>
 
   <h2 style="font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 28px; letter-spacing: -0.02em; margin: 0 0 24px; color: oklch(0.96 0.005 260);">{data.anket.soru}</h2>
 
@@ -37,13 +37,13 @@
         <div style="height: 12px; background: oklch(0.26 0.02 265); border-radius: 999px; overflow: hidden;">
           <div style="height: 100%; border-radius: 999px; background: {LIME}; width: {yuzde(r.oy)}%;"></div>
         </div>
-        <div style="margin-top: 7px; font-family: 'JetBrains Mono', monospace; font-size: 11px; color: oklch(0.6 0.01 260);">{formatN(r.oy)} votes</div>
+        <div style="margin-top: 7px; font-family: 'JetBrains Mono', monospace; font-size: 11px; color: oklch(0.6 0.01 260);">{formatN(r.oy)} oy</div>
       </div>
     {/each}
   </div>
 
   <div style="margin-top: 24px; padding-top: 20px; border-top: 1px solid oklch(0.28 0.02 265); font-family: 'JetBrains Mono', monospace; font-size: 12px; color: oklch(0.6 0.01 260);">
-    {formatN(toplamOy)} total votes ·
+    {formatN(toplamOy)} toplam oy ·
     <a href="/dogrulama/{data.anket.slug}" style="color: oklch(0.82 0.17 145); text-decoration: underline;">🔒 sonucu doğrula</a>
   </div>
 </div>

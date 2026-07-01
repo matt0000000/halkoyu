@@ -25,8 +25,8 @@
   }
 
   function formatDate(d: Date): string {
-    const weekday = d.toLocaleDateString('en-US', { weekday: 'long' });
-    const rest = d.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+    const weekday = d.toLocaleDateString('tr-TR', { weekday: 'long' });
+    const rest = d.toLocaleDateString('tr-TR', { month: 'long', day: 'numeric', year: 'numeric' });
     return `${weekday} · ${rest}`;
   }
 
@@ -48,8 +48,8 @@
 <div style="padding-top: 32px;">
   {#if !data.anket}
     <div style="text-align: center; padding: 60px 0; color: oklch(0.6 0.01 260);">
-      <p style="font-size: 16px; margin: 0 0 12px;">No active poll today.</p>
-      <a href="/sonuclar" style="font-family: 'JetBrains Mono', monospace; font-size: 13px; color: oklch(0.82 0.17 145); text-decoration: underline;">View past results →</a>
+      <p style="font-size: 16px; margin: 0 0 12px;">Bugün aktif anket yok.</p>
+      <a href="/sonuclar" style="font-family: 'JetBrains Mono', monospace; font-size: 13px; color: oklch(0.82 0.17 145); text-decoration: underline;">Geçmiş sonuçları gör →</a>
     </div>
   {:else}
     <!-- Meta row -->
@@ -63,7 +63,7 @@
     </h1>
 
     <p style="margin: 0 0 12px; font-size: 15px; color: oklch(0.62 0.01 260);">
-      Poll of the day. One vote each — cast yours below.
+      Günün anketi. Kişi başı bir oy — seçimini aşağıdan yap.
     </p>
 
     <a href="/nasil-guvenilir" style="display: inline-flex; align-items: center; gap: 6px; margin-bottom: 26px; font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.03em; color: oklch(0.5 0.02 265); text-decoration: none;">

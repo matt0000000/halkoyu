@@ -19,13 +19,13 @@
         </a>
         <nav style="display: flex; gap: 28px;">
           <a href="/" style="position: relative; background: none; border: none; padding: 4px 0; text-decoration: none; font-family: 'JetBrains Mono', monospace; font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: oklch(0.7 0.01 260);">
-            Today
+            Bugün
             {#if isToday}
               <div style="position: absolute; left: 0; right: 0; bottom: -6px; height: 2px; background: oklch(0.82 0.17 145); border-radius: 2px;"></div>
             {/if}
           </a>
           <a href="/sonuclar" style="position: relative; background: none; border: none; padding: 4px 0; text-decoration: none; font-family: 'JetBrains Mono', monospace; font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: oklch(0.7 0.01 260);">
-            Archive
+            Arşiv
             {#if isArchive}
               <div style="position: absolute; left: 0; right: 0; bottom: -6px; height: 2px; background: oklch(0.82 0.17 145); border-radius: 2px;"></div>
             {/if}

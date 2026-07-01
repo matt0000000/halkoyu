@@ -15,7 +15,7 @@
 
   function formatDate(iso: string): string {
     const d = new Date(iso);
-    return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }).toUpperCase();
+    return d.toLocaleDateString('tr-TR', { month: 'short', day: 'numeric' }).toUpperCase();
   }
 
   function formatN(n: number): string {
@@ -24,16 +24,16 @@
 </script>
 
 <svelte:head>
-  <title>Archive — referandoom</title>
+  <title>Arşiv — referandoom</title>
 </svelte:head>
 
 <div style="padding-top: 28px;">
-  <h2 style="font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 28px; letter-spacing: -0.02em; margin: 0 0 4px; color: oklch(0.96 0.005 260);">Past referendums</h2>
-  <p style="margin: 0 0 20px; font-size: 14px; color: oklch(0.6 0.01 260);">Every verdict, settled by the people.</p>
+  <h2 style="font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 28px; letter-spacing: -0.02em; margin: 0 0 4px; color: oklch(0.96 0.005 260);">Geçmiş anketler</h2>
+  <p style="margin: 0 0 20px; font-size: 14px; color: oklch(0.6 0.01 260);">Her karar, halk tarafından verildi.</p>
 
   {#if data.anketler.length === 0}
     <div style="padding: 40px 0; text-align: center; color: oklch(0.6 0.01 260); font-family: 'JetBrains Mono', monospace; font-size: 13px;">
-      No past polls yet.
+      Henüz geçmiş anket yok.
     </div>
   {:else}
     {#each data.anketler as anket (anket.id)}
@@ -53,7 +53,7 @@
           <div style="height: 6px; background: oklch(0.26 0.02 265); border-radius: 999px; overflow: hidden;">
             <div style="height: 100%; background: oklch(0.82 0.17 145); border-radius: 999px; width: {pct}%;"></div>
           </div>
-          <div style="margin-top: 5px; font-family: 'JetBrains Mono', monospace; font-size: 10px; color: oklch(0.55 0.01 260);">{formatN(toplam)} votes</div>
+          <div style="margin-top: 5px; font-family: 'JetBrains Mono', monospace; font-size: 10px; color: oklch(0.55 0.01 260);">{formatN(toplam)} oy</div>
           <a href="/dogrulama/{anket.slug}" style="display: inline-block; margin-top: 6px; font-family: 'JetBrains Mono', monospace; font-size: 10px; color: oklch(0.55 0.02 265); text-decoration: underline;">🔒 sonucu doğrula →</a>
         </div>
       </div>

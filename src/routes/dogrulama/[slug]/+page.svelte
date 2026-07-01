@@ -56,7 +56,7 @@
 </svelte:head>
 
 <div style="padding-top: 28px;">
-  <a href="/sonuclar" style="display: inline-block; margin-bottom: 24px; font-family: 'JetBrains Mono', monospace; font-size: 12px; letter-spacing: 0.06em; color: oklch(0.6 0.01 260); text-decoration: none;">← Archive</a>
+  <a href="/sonuclar" style="display: inline-block; margin-bottom: 24px; font-family: 'JetBrains Mono', monospace; font-size: 12px; letter-spacing: 0.06em; color: oklch(0.6 0.01 260); text-decoration: none;">← Arşiv</a>
 
   <h2 style="font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 26px; letter-spacing: -0.02em; margin: 0 0 6px; color: oklch(0.96 0.005 260);">Zincir Doğrulaması</h2>
   <p style="margin: 0 0 6px; font-size: 14px; color: oklch(0.6 0.01 260);">{data.anket.soru}</p>
