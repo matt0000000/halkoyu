@@ -36,6 +36,13 @@
       <!-- Page content -->
       {@render children()}
 
+      <!-- Footer -->
+      <div style="margin-top: 40px; padding-top: 20px; border-top: 1px solid oklch(0.28 0.02 265); text-align: center;">
+        <a href="/nasil-guvenilir" style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.04em; color: oklch(0.55 0.02 265); text-decoration: none;">
+          🔒 Bu sonuçlara neden güvenebilirsin?
+        </a>
+      </div>
+
     </div>
   </div>
 </div>

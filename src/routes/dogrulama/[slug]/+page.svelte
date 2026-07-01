@@ -53,7 +53,11 @@
   <a href="/sonuclar" style="display: inline-block; margin-bottom: 24px; font-family: 'JetBrains Mono', monospace; font-size: 12px; letter-spacing: 0.06em; color: oklch(0.6 0.01 260); text-decoration: none;">← Archive</a>
 
   <h2 style="font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 26px; letter-spacing: -0.02em; margin: 0 0 6px; color: oklch(0.96 0.005 260);">Zincir Doğrulaması</h2>
-  <p style="margin: 0 0 28px; font-size: 14px; color: oklch(0.6 0.01 260);">{data.anket.soru}</p>
+  <p style="margin: 0 0 6px; font-size: 14px; color: oklch(0.6 0.01 260);">{data.anket.soru}</p>
+  <p style="margin: 0 0 28px; font-size: 13px; color: oklch(0.55 0.01 260); line-height: 1.6;">
+    Bu sayfa, bu anketin oy kayıtlarının sonradan değiştirilip değiştirilmediğini <strong>senin tarayıcında</strong> kontrol eder — bize güvenmene gerek yok.
+    Bu sistemin nasıl çalıştığını sade bir dille anlatan <a href="/nasil-guvenilir" style="color: oklch(0.82 0.17 145); text-decoration: underline;">bu sayfayı</a> önce okuyabilirsin.
+  </p>
 
   <!-- Verification status -->
   <div style="padding: 22px 24px; border-radius: 12px; margin-bottom: 28px; background: oklch(0.22 0.015 265); border: 1.5px solid {durum === 'gecersiz' ? KIRMIZI : durum === 'gecerli' ? LIME : 'oklch(0.34 0.02 265)'};">
