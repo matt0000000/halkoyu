@@ -1,5 +1,4 @@
 <script lang="ts">
-  import SonucBar from '$lib/components/SonucBar.svelte';
   import type { PageData } from './$types';
 
   let { data }: { data: PageData } = $props();
@@ -7,29 +6,43 @@
   let oyA = $state(data.oy_a);
   let oyB = $state(data.oy_b);
   let toplamOy = $derived(oyA + oyB);
+
+  const LIME = 'oklch(0.82 0.17 145)';
+
+  function yuzde(oy: number): number {
+    return toplamOy === 0 ? 0 : Math.round((oy / toplamOy) * 100);
+  }
+
+  function formatN(n: number): string {
+    return n.toLocaleString();
+  }
 </script>
 
 <svelte:head>
   <title>{data.anket.soru} — referandoom</title>
 </svelte:head>
 
-<div class="max-w-xl mx-auto px-5 py-12">
-  <a href="/sonuclar" class="text-[13px] transition-colors mb-7 inline-block" style="color: #666680;">
-    ← Geçmiş Sonuçlar
-  </a>
+<div style="padding-top: 28px;">
+  <a href="/sonuclar" style="display: inline-block; margin-bottom: 24px; font-family: 'JetBrains Mono', monospace; font-size: 12px; letter-spacing: 0.06em; color: oklch(0.6 0.01 260); text-decoration: none;">← Archive</a>
 
-  <div class="flex items-start justify-between gap-4 mb-5">
-    <h1 class="text-[22px] font-semibold text-white leading-snug">{data.anket.soru}</h1>
-    <span class="text-[11px] px-2.5 py-1 rounded font-medium shrink-0 border"
-      style="{data.anket.aktif
-        ? 'color: #b6e84a; border-color: #b6e84a33; background: #b6e84a11;'
-        : 'color: #666680; border-color: #2a2a34; background: #2a2a3499;'}">
-      {data.anket.aktif ? 'Aktif' : 'Kapalı'}
-    </span>
+  <h2 style="font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 28px; letter-spacing: -0.02em; margin: 0 0 24px; color: oklch(0.96 0.005 260);">{data.anket.soru}</h2>
+
+  <div style="display: flex; flex-direction: column; gap: 22px;">
+    {#each [{ label: data.anket.secenek_a, oy: oyA }, { label: data.anket.secenek_b, oy: oyB }] as r}
+      <div>
+        <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 9px;">
+          <span style="font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 21px; color: oklch(0.94 0.005 260);">{r.label}</span>
+          <span style="font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 26px; color: {LIME};">{yuzde(r.oy)}%</span>
+        </div>
+        <div style="height: 12px; background: oklch(0.26 0.02 265); border-radius: 999px; overflow: hidden;">
+          <div style="height: 100%; border-radius: 999px; background: {LIME}; width: {yuzde(r.oy)}%;"></div>
+        </div>
+        <div style="margin-top: 7px; font-family: 'JetBrains Mono', monospace; font-size: 11px; color: oklch(0.6 0.01 260);">{formatN(r.oy)} votes</div>
+      </div>
+    {/each}
   </div>
 
-  <div class="rounded-2xl p-5 space-y-2" style="background: #2a2a34;">
-    <SonucBar secenek={data.anket.secenek_a} oy={oyA} {toplamOy} />
-    <SonucBar secenek={data.anket.secenek_b} oy={oyB} {toplamOy} />
+  <div style="margin-top: 24px; padding-top: 20px; border-top: 1px solid oklch(0.28 0.02 265); font-family: 'JetBrains Mono', monospace; font-size: 12px; color: oklch(0.6 0.01 260);">
+    {formatN(toplamOy)} total votes
   </div>
 </div>

@@ -1,10 +1,39 @@
 @import 'tailwindcss';
 
-@theme {
-  --color-brand: #00C805;
-  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-}
-
 * {
   -webkit-font-smoothing: antialiased;
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: oklch(0.13 0.012 265);
+  font-family: 'Space Grotesk', sans-serif;
+}
+
+@keyframes grow {
+  from { width: 0 !important; }
+}
+
+.poll-option {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  text-align: left;
+  background: oklch(0.22 0.015 265);
+  border: 1.5px solid oklch(0.34 0.02 265);
+  border-radius: 12px;
+  padding: 22px 26px;
+  cursor: pointer;
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 600;
+  font-size: 22px;
+  color: oklch(0.92 0.005 260);
+  transition: all 0.18s;
+}
+
+.poll-option:hover {
+  border-color: oklch(0.82 0.17 145);
+  background: oklch(0.25 0.02 265);
 }

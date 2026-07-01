@@ -4,7 +4,7 @@ import { supabaseServer } from '$lib/supabase';
 export const load: PageServerLoad = async () => {
   const { data: anketler } = await supabaseServer
     .from('anketler')
-    .select('id, slug, soru, secenek_a, secenek_b, created_at')
+    .select('id, slug, soru, secenek_a, secenek_b, created_at, aktif')
     .eq('aktif', false)
     .order('created_at', { ascending: false });
 

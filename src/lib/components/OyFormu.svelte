@@ -1,13 +1,14 @@
 <script lang="ts">
-  const LIME = '#b6e84a';
+  const LIME = 'oklch(0.82 0.17 145)';
 
-  let { anketId, secenekA, secenekB, oyA, oyB, toplamOy, onOyKaydedildi }: {
+  let { anketId, secenekA, secenekB, oyA, oyB, toplamOy, countdown, onOyKaydedildi }: {
     anketId: string;
     secenekA: string;
     secenekB: string;
     oyA: number;
     oyB: number;
     toplamOy: number;
+    countdown: string;
     onOyKaydedildi?: (secim: 'A' | 'B', oylar: { a: number; b: number }) => void;
   } = $props();
 
@@ -33,63 +34,71 @@
     secilen = secim;
     onOyKaydedildi?.(secim, data.oylar);
   }
+
+  function formatN(n: number): string {
+    return n.toLocaleString();
+  }
+
+  let results = $derived([
+    { id: 'A', label: secenekA, pct: yuzdeA, votes: oyA, isChoice: secilen === 'A' },
+    { id: 'B', label: secenekB, pct: yuzdeB, votes: oyB, isChoice: secilen === 'B' },
+  ]);
 </script>
 
-<div class="space-y-2">
-  {#each (['A', 'B'] as const) as secim}
-    {@const isA = secim === 'A'}
-    {@const secenek = isA ? secenekA : secenekB}
-    {@const yuzde = isA ? yuzdeA : yuzdeB}
-    {@const secildi = secilen === secim}
-    {@const oylandiMi = secilen !== null}
-
-    <button
-      onclick={() => oyKullan(secim)}
-      disabled={yukleniyor || oylandiMi}
-      class="relative w-full rounded-xl overflow-hidden text-left transition-all duration-200 disabled:cursor-default"
-      style="height: 68px; background: #2a2a34;"
-    >
-      {#if oylandiMi}
-        <!-- Lime fill bar -->
-        <div
-          class="absolute inset-y-0 left-0 rounded-xl transition-all duration-700"
-          style="width: {yuzde}%; background: {LIME}; opacity: {secildi ? 1 : 0.22};"
-        ></div>
-      {/if}
-
-      <!-- Content -->
-      <div class="relative flex items-center justify-between px-5 h-full">
-        <div class="flex items-center gap-3">
-          {#if oylandiMi}
-            {#if secildi}
-              <svg width="20" height="20" viewBox="0 0 20 20" fill="none" class="shrink-0">
-                <circle cx="10" cy="10" r="9" fill="#18181f"/>
-                <path d="M6 10.5l3 3 5-6" stroke={LIME} stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
-            {:else}
-              <span class="w-5 h-5 rounded-full shrink-0" style="border: 2px solid #3a3a48;"></span>
-            {/if}
-          {:else}
-            <span class="w-5 h-5 rounded-full shrink-0" style="border: 2px solid {LIME}44;"></span>
-          {/if}
-
-          <span class="font-semibold text-[15px]" style="color: {oylandiMi && !secildi ? '#4a4a5a' : 'white'};">
-            {secenek}
-          </span>
-        </div>
-
-        {#if oylandiMi}
-          <span class="font-bold tabular-nums text-[16px]" style="color: {secildi ? '#18181f' : '#4a4a5a'};">
-            {yuzde}%
-          </span>
-        {:else if yukleniyor}
-          <span class="text-[12px]" style="color: #4a4a5a;">...</span>
-        {/if}
-      </div>
+{#if !secilen}
+  <!-- Pre-vote: option buttons -->
+  <div style="display: flex; flex-direction: column; gap: 14px;">
+    <button class="poll-option" onclick={() => oyKullan('A')} disabled={yukleniyor}>
+      <span>{secenekA}</span>
+      <span style="width: 22px; height: 22px; border-radius: 50%; border: 1.5px solid oklch(0.45 0.02 265); flex-shrink: 0;"></span>
     </button>
-  {/each}
-</div>
+    <button class="poll-option" onclick={() => oyKullan('B')} disabled={yukleniyor}>
+      <span>{secenekB}</span>
+      <span style="width: 22px; height: 22px; border-radius: 50%; border: 1.5px solid oklch(0.45 0.02 265); flex-shrink: 0;"></span>
+    </button>
+  </div>
 
-{#if hata}
-  <p class="text-[13px] text-center pt-2" style="color: #e84a4a;">{hata}</p>
+  {#if hata}
+    <p style="margin: 12px 0 0; font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #e84a4a;">{hata}</p>
+  {/if}
+
+  <!-- Countdown -->
+  <div style="display: flex; align-items: center; gap: 10px; margin-top: 28px; padding-top: 22px; border-top: 1px solid oklch(0.28 0.02 265); font-family: 'JetBrains Mono', monospace; font-size: 12px; color: oklch(0.6 0.01 260);">
+    <span style="text-transform: uppercase; letter-spacing: 0.08em;">Next referendum in</span>
+    <span style="font-size: 16px; color: {LIME}; font-weight: 500;">{countdown}</span>
+  </div>
+
+{:else}
+  <!-- Post-vote: result bars -->
+  <div style="display: flex; flex-direction: column; gap: 22px;">
+    {#each results as r}
+      <div>
+        <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 9px;">
+          <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+            <span style="font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 21px; color: oklch(0.94 0.005 260);">{r.label}</span>
+            {#if r.isChoice}
+              <span style="font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: {LIME}; border: 1px solid oklch(0.5 0.12 145); border-radius: 999px; padding: 2px 8px; white-space: nowrap;">Your vote</span>
+            {/if}
+          </div>
+          <span style="font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 26px; color: {LIME}; flex-shrink: 0; margin-left: 12px;">{r.pct}%</span>
+        </div>
+        <div style="height: 12px; background: oklch(0.26 0.02 265); border-radius: 999px; overflow: hidden;">
+          <div style="height: 100%; border-radius: 999px; background: {LIME}; width: {r.pct}%; animation: grow 0.9s cubic-bezier(0.2,0.8,0.2,1);"></div>
+        </div>
+        <div style="margin-top: 7px; font-family: 'JetBrains Mono', monospace; font-size: 11px; color: oklch(0.6 0.01 260);">{formatN(r.votes)} votes</div>
+      </div>
+    {/each}
+  </div>
+
+  <!-- Post-vote footer -->
+  <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-top: 30px; padding-top: 22px; border-top: 1px solid oklch(0.28 0.02 265);">
+    <div style="font-family: 'JetBrains Mono', monospace; font-size: 12px; color: oklch(0.6 0.01 260);">
+      {formatN(toplamOy)} total votes ·
+      <button onclick={() => { secilen = null; hata = ''; }} style="background: none; border: none; padding: 0; cursor: pointer; font-family: 'JetBrains Mono', monospace; font-size: 12px; color: {LIME}; text-decoration: underline;">vote again</button>
+    </div>
+    <div style="text-align: right; flex-shrink: 0; margin-left: 16px;">
+      <div style="font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: oklch(0.6 0.01 260); margin-bottom: 3px;">Next referendum in</div>
+      <div style="font-family: 'JetBrains Mono', monospace; font-size: 20px; font-weight: 500; color: {LIME};">{countdown}</div>
+    </div>
+  </div>
 {/if}
