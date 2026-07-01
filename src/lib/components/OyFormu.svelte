@@ -106,8 +106,7 @@
   <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-top: 30px; padding-top: 22px; border-top: 1px solid oklch(0.28 0.02 265);">
     <div style="font-family: 'JetBrains Mono', monospace; font-size: 12px; color: oklch(0.6 0.01 260);">
       {formatN(toplamOy)} total votes ·
-      <button onclick={() => { secilen = null; hata = ''; }} style="background: none; border: none; padding: 0; cursor: pointer; font-family: 'JetBrains Mono', monospace; font-size: 12px; color: {LIME}; text-decoration: underline;">vote again</button>
-      · <a href="/dogrulama/{anketSlug}" style="color: {LIME}; text-decoration: underline;">zinciri doğrula</a>
+      <a href="/dogrulama/{anketSlug}" style="color: {LIME}; text-decoration: underline;">zinciri doğrula</a>
     </div>
     <div style="text-align: right; flex-shrink: 0; margin-left: 16px;">
       <div style="font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: oklch(0.6 0.01 260); margin-bottom: 3px;">Next referendum in</div>
