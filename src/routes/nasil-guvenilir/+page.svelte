@@ -10,9 +10,25 @@
   <h2 style="font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 26px; letter-spacing: -0.02em; margin: 0 0 8px; color: oklch(0.96 0.005 260);">
     Bu sonuçlara neden güvenebilirsin?
   </h2>
-  <p style="margin: 0 0 32px; font-size: 15px; color: oklch(0.65 0.01 260); line-height: 1.6;">
+  <p style="margin: 0 0 20px; font-size: 15px; color: oklch(0.65 0.01 260); line-height: 1.6;">
     Kısa cevap: bize güvenmene gerek yok. Sisteme güvenmen yeterli — çünkü sonuçları biz istesek bile fark ettirmeden değiştiremeyiz.
   </p>
+
+  <!-- Quick-scan summary -->
+  <div style="display: flex; flex-direction: column; gap: 10px; margin-bottom: 32px;">
+    <div style="display: flex; align-items: center; gap: 12px; padding: 12px 16px; background: oklch(0.22 0.015 265); border-radius: 10px;">
+      <span style="font-size: 18px; flex-shrink: 0;">🔗</span>
+      <span style="font-size: 13px; color: oklch(0.8 0.01 260);"><strong style="color: oklch(0.94 0.005 260);">Zincir:</strong> her oy, öncekinin izini taşır — geçmiş sessizce değiştirilemez</span>
+    </div>
+    <div style="display: flex; align-items: center; gap: 12px; padding: 12px 16px; background: oklch(0.22 0.015 265); border-radius: 10px;">
+      <span style="font-size: 18px; flex-shrink: 0;">✍️</span>
+      <span style="font-size: 13px; color: oklch(0.8 0.01 260);"><strong style="color: oklch(0.94 0.005 260);">İmza:</strong> her oy gizli bir anahtarla imzalanır — veritabanına sahte oy eklenemez</span>
+    </div>
+    <div style="display: flex; align-items: center; gap: 12px; padding: 12px 16px; background: oklch(0.22 0.015 265); border-radius: 10px;">
+      <span style="font-size: 18px; flex-shrink: 0;">₿</span>
+      <span style="font-size: 13px; color: oklch(0.8 0.01 260);"><strong style="color: oklch(0.94 0.005 260);">Bitcoin:</strong> zincirin durumu periyodik olarak bağımsız bir ağa damgalanır</span>
+    </div>
+  </div>
 
   <!-- The problem -->
   <div style="margin-bottom: 28px;">
@@ -40,7 +56,7 @@
   <div style="margin-bottom: 28px;">
     <h3 style="font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 17px; margin: 0 0 8px; color: oklch(0.9 0.005 260);">Bunun sana faydası ne?</h3>
     <p style="margin: 0; font-size: 14px; color: oklch(0.65 0.01 260); line-height: 1.7;">
-      Herhangi bir anketin sonuç sayfasında "zinciri doğrula" linkine tıklayarak, o anketin tüm oy kayıtlarını indirebilir ve kendi tarayıcında zincirin gerçekten tutarlı olup olmadığını kontrol edebilirsin. İstersen daha da ileri gidip, Bitcoin'e yapılan damgalamayı bizden tamamen bağımsız bir araçla (opentimestamps.org) da doğrulayabilirsin. Hiçbir aşamada bize güvenmen gerekmiyor — sadece matematiği ve Bitcoin ağını kontrol ediyorsun.
+      Herhangi bir anketin sonuç sayfasında "🔒 sonucu doğrula" linkine tıklayarak, o anketin tüm oy kayıtlarını indirebilir ve kendi tarayıcında zincirin gerçekten tutarlı olup olmadığını kontrol edebilirsin. İstersen daha da ileri gidip, Bitcoin'e yapılan damgalamayı bizden tamamen bağımsız bir araçla (opentimestamps.org) da doğrulayabilirsin. Hiçbir aşamada bize güvenmen gerekmiyor — sadece matematiği ve Bitcoin ağını kontrol ediyorsun.
     </p>
   </div>
 

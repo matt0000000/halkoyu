@@ -62,9 +62,13 @@
       {data.anket.soru}
     </h1>
 
-    <p style="margin: 0 0 30px; font-size: 15px; color: oklch(0.62 0.01 260);">
+    <p style="margin: 0 0 12px; font-size: 15px; color: oklch(0.62 0.01 260);">
       Poll of the day. One vote each — cast yours below.
     </p>
+
+    <a href="/nasil-guvenilir" style="display: inline-flex; align-items: center; gap: 6px; margin-bottom: 26px; font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.03em; color: oklch(0.5 0.02 265); text-decoration: none;">
+      🔒 Sonuçlar doğrulanabilir — nasıl çalıştığını öğren
+    </a>
 
     <OyFormu
       anketId={data.anket.id}
